@@ -17,6 +17,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class Ihm extends Application {
+    //test normal c'est good !!!
     static Wks wks = new Wks();
     static Scanner sc = new Scanner(System.in);
     static SerialPort serialPort;
