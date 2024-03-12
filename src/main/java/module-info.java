@@ -6,6 +6,7 @@ module com.example.interfaceonduleurv {
     requires com.fasterxml.jackson.core;
     requires com.fasterxml.jackson.databind;
     requires jssc;
+    requires org.apache.commons.lang3;
 
 
     opens com.example.interfaceonduleurv0 to javafx.fxml;

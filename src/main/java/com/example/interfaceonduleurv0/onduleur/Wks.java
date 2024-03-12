@@ -1,13 +1,15 @@
 package com.example.interfaceonduleurv0.onduleur;
 
+import com.example.interfaceonduleurv0.RPI.ModeleQPIGS;
+import com.example.interfaceonduleurv0.RPI.ModeleQPIRI;
+import com.example.interfaceonduleurv0.RPI.ModeleQPIWS;
 import jssc.SerialPortEvent;
 import jssc.SerialPortException;
-import org.apache.commons.lang3.ArrayUtils;
-import org.example.modeles.RPI.ModeleQPIGS;
-import org.example.modeles.RPI.ModeleQPIRI;
-import org.example.modeles.RPI.ModeleQPIWS;
+
 
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import org.apache.commons.lang3.ArrayUtils;
 
 
 public class Wks extends LiaisonSerie {
