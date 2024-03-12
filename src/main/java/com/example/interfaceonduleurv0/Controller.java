@@ -1,5 +1,6 @@
 package com.example.interfaceonduleurv0;
 
+import com.example.interfaceonduleurv0.RPI.ModeleQPIGS;
 import com.example.interfaceonduleurv0.SQl.SqlGestion;
 
 import com.example.interfaceonduleurv0.Distant.ReceptionGestion;
@@ -33,7 +34,7 @@ public class Controller implements Initializable {
             try {
             SqlGestion sqlGestion = new SqlGestion();
             while (true) {
-                sqlGestion.mesure("2365.2", new Timestamp(System.currentTimeMillis()));
+                sqlGestion.mesure(new ModeleQPIGS().getPuissanceActiveDeSortie_AC(), new Timestamp(System.currentTimeMillis()));
                 System.out.println("mesure done !");
                 Thread.sleep(60000);
             }

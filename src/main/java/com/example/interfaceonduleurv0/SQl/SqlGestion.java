@@ -2,6 +2,8 @@ package com.example.interfaceonduleurv0.SQl;
 
 import com.example.interfaceonduleurv0.Controller;
 import com.example.interfaceonduleurv0.DonneRecup;
+import com.example.interfaceonduleurv0.RPI.ModeleQPIGS;
+import com.example.interfaceonduleurv0.onduleur.Wks;
 
 import java.io.CharArrayReader;
 import java.sql.*;
@@ -9,7 +11,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 public class SqlGestion extends Controller {
+    private ModeleQPIGS qpigs = new ModeleQPIGS();
     private SqlConn sqlConn = new SqlConn();
+     Wks wks = new Wks();
     private Connection connection = sqlConn.getConnTestBdd();
     private PreparedStatement requeteAll = connection.prepareStatement("SELECT * FROM calculs");
     private PreparedStatement requete1 = connection.prepareStatement("SELECT * FROM calculs ORDER BY id_calcul DESC LIMIT ?"), requete2 = connection.prepareStatement("SELECT * FROM calculs WHERE date <= ? and date >= ?"), requete3 = connection.prepareStatement("INSERT INTO calculs(id_calcul,energie,gain,date) VALUES(null,?,?,?)");

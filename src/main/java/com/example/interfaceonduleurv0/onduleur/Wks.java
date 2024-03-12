@@ -13,7 +13,7 @@ import org.apache.commons.lang3.ArrayUtils;
 
 
 public class Wks extends LiaisonSerie {
-
+//truc
     private final byte[] QPIGS = "QPIGS".getBytes(StandardCharsets.US_ASCII);
     private final byte[] QPIRI = "QPIRI".getBytes(StandardCharsets.US_ASCII);
     private final byte[] QPIWS = "QPIWS".getBytes(StandardCharsets.US_ASCII);

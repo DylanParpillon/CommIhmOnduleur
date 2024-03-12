@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="onduleur" uuid="ab0364ef-6c1e-414c-92a6-1d0a70626ff4">
+    <data-source source="LOCAL" name="onduleur" uuid="a1ae2792-afce-46e5-b76e-449d6b8adbd1">
       <driver-ref>sqlite.xerial</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
-      <jdbc-url>jdbc:sqlite:C:\Users\didou\Desktop\Projet\JavaFX\interfaceOnduleurV0\src\onduleur.db</jdbc-url>
+      <jdbc-url>jdbc:sqlite:T:\Moser\CommIhmOnduleur\src\main\onduleur.db</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
       <libraries>
         <library>
