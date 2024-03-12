@@ -1,0 +1,44 @@
+/* Applique un contour aux labels dans les GridPane */
+GridPane Label {
+    -fx-border-color: #333;
+    -fx-border-width: 2px;
+    -fx-background-color: rgba(255, 255, 255, 0.6);
+    -fx-font-family: "Arial";
+    -fx-font-size: 14px;
+    -fx-text-fill: #0088cc;
+}
+.grid-label{
+    -fx-border-color: #000;
+    -fx-border-width: 2px;
+    -fx-background-color: rgba(255, 255, 255, 0.6);
+}
+GridPane {
+    -fx-hgap: 4px; /* Espacement horizontal */
+    -fx-vgap: 4px; /* Espacement vertical */
+    -fx-padding: 6px;
+}
+/* Applique une image en fond à la VBox */
+.headerLabel{
+    -fx-background-color: rgb(128, 128, 128);
+    -fx-font-family: "Arial";
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #02f7ff; /* Bleu scientifique encore plus clair */
+    -fx-text-stroke: #000;
+    -fx-text-stroke-width: 1px; /* Largeur du contour */
+    -fx-alignment: center; /* Centre le texte horizontalement */
+    -fx-content-display: center; /* Centre le texte verticalement */
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.5) , 2, 100 , 1 , 1 ); /* Effet d'élévation */
+}
+#labelStatut{
+    -fx-border-color: rgba(0, 0, 0, 1);
+    -fx-border-width: 4px;
+    -fx-background-color: rgba(206, 206, 206, 0.7);
+}
+#mainLayout {
+    -fx-background-image: url('https://cdn1.regie-agricole.com/ulf/CMS_Content/1/articles/859060/_panneaux-photovoltaiques-1000x562.jpg');
+    -fx-background-size: cover;
+    -fx-background-position: center;
+    -fx-background-repeat: no-repeat;
+}
+
