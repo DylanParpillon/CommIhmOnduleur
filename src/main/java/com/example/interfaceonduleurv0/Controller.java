@@ -9,6 +9,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 
+import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -49,8 +50,8 @@ public class Controller implements Initializable {
             SqlGestion sqlGestion = new SqlGestion();
             respond = receptionGestion.post(sqlGestion.lastValue());
             System.out.println(respond);
-            } catch (SQLException | JsonProcessingException e) {
-                throw new RuntimeException(e);
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
             }
             while (true) {
 
