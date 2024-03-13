@@ -10,7 +10,6 @@ import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import jssc.SerialPort;
 import jssc.SerialPortException;
-
 import java.io.IOException;
 import java.util.Scanner;
 import java.util.Timer;

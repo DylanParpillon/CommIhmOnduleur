@@ -8,7 +8,6 @@ import jssc.SerialPortException;
 
 
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 
 import org.apache.commons.lang3.ArrayUtils;
 

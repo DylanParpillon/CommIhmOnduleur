@@ -1,10 +1,7 @@
 package com.example.interfaceonduleurv0.onduleur; /**
  * @author Michael
  */
-
-
 import jssc.*;
-
 import java.util.ArrayList;
 
 public class LiaisonSerie implements SerialPortEventListener {

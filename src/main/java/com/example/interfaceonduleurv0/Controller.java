@@ -2,18 +2,13 @@ package com.example.interfaceonduleurv0;
 
 import com.example.interfaceonduleurv0.RPI.ModeleQPIGS;
 import com.example.interfaceonduleurv0.SQl.SqlGestion;
-
 import com.example.interfaceonduleurv0.Distant.ReceptionGestion;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
-
-import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-
 import java.util.*;
 
 
@@ -21,10 +16,6 @@ public class Controller implements Initializable {
     public ReceptionGestion receptionGestion =   new  ReceptionGestion("ws://10.0.0.172:8080/insertearnings");
     public Button buttonId;
     public VBox mainLayout;
-
-    /*static Wks wks = new Wks();
-    static Scanner sc = new Scanner(System.in);
-    static SerialPort serialPort;*/
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -51,11 +42,9 @@ public class Controller implements Initializable {
             respond = receptionGestion.post(sqlGestion.lastValue());
             System.out.println(respond);
             } catch (SQLException e) {
-                System.out.println(e.getMessage());
+                System.err.println(e.getMessage());
             }
             while (true) {
-
-
                 try {
                     Thread.sleep(6000);
                 } catch (InterruptedException e) {
@@ -64,13 +53,6 @@ public class Controller implements Initializable {
 
             }
         }).start();
-
-
     }
-
-
-
-
-
 }
 

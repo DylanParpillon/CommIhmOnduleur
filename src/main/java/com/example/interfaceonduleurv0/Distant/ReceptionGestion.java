@@ -1,14 +1,10 @@
 package com.example.interfaceonduleurv0.Distant;
 
 import com.example.interfaceonduleurv0.DonneRecup;
-
 import java.io.*;
 import java.net.*;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Arrays;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 
@@ -67,8 +63,11 @@ public class ReceptionGestion {
             // Obtenir le flux de sortie pour écrire les données
             conn.setRequestProperty("Content-Length", data.get(0));
             conn.setUseCaches(false);
-            DataOutputStream wr = new DataOutputStream(conn.getOutputStream());
-            wr.write(data.get(0).getBytes());
+            writer = new OutputStreamWriter(conn.getOutputStream());
+            for (String c : data) {
+                writer.write(c);
+                writer.flush();
+            }
         // Lire la réponse de la requête
             BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
             StringBuilder response = new StringBuilder();
@@ -76,7 +75,7 @@ public class ReceptionGestion {
                 response.append(in.readLine());
             }
             // Afficher la réponse
-            System.out.println(response);return result.toString();
+            System.out.println("zzzz" + response);return result.toString();
         } catch (Exception e) {
             System.err.println(e.getMessage());
         }
