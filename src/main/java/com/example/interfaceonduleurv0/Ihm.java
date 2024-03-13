@@ -46,7 +46,7 @@ public class Ihm extends Application {
         Scene scene = new Scene(loader.load());
         stage.setTitle("V2");
         stage.setScene(scene);
-        stage.setResizable(true);
+        stage.setResizable(false);
         stage.show();
     }
 

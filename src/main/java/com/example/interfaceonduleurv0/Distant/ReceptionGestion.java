@@ -65,6 +65,8 @@ public class ReceptionGestion {
             System.out.println(data.get(0));
             conn.setRequestProperty("Content-Length", data.get(0));
             // Obtenir le flux de sortie pour écrire les données
+            conn.setRequestProperty("Content-Length", data.get(0));
+            conn.setUseCaches(false);
             DataOutputStream wr = new DataOutputStream(conn.getOutputStream());
             wr.write(data.get(0).getBytes());
         // Lire la réponse de la requête
