@@ -68,14 +68,14 @@ public class ReceptionGestion {
                 writer.write(c);
                 writer.flush();
             }
-        // Lire la réponse de la requête
-            BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+        // regarder pour recevoir la reponse car sa plante
+            /*BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
             StringBuilder response = new StringBuilder();
             while (in.readLine() != null) {
                 response.append(in.readLine());
             }
             // Afficher la réponse
-            System.out.println("zzzz" + response);return result.toString();
+            System.out.println("zzzz" + response);return result.toString();*/
         } catch (Exception e) {
             System.err.println(e.getMessage());
         }
