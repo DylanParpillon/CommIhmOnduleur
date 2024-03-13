@@ -1,19 +1,19 @@
 package com.example.interfaceonduleurv0;
 
-import com.example.interfaceonduleurv0.RPI.ModeleQPIGS;
+import com.example.interfaceonduleurv0.Distant.BddDistante;
 import com.example.interfaceonduleurv0.SQl.SqlGestion;
-import com.example.interfaceonduleurv0.Distant.ReceptionGestion;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
+
 import java.net.URL;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.util.*;
+import java.util.ResourceBundle;
 
 
 public class Controller implements Initializable {
-    public ReceptionGestion receptionGestion =   new  ReceptionGestion("ws://10.0.0.172:8080/insertearnings");
+    public BddDistante bddDistante =   new BddDistante("ws://10.0.0.172:8080/insertearnings");
     public Button buttonId;
     public VBox mainLayout;
 
@@ -26,7 +26,7 @@ public class Controller implements Initializable {
             try {
             SqlGestion sqlGestion = new SqlGestion();
             while (true) {
-                sqlGestion.mesure(new ModeleQPIGS().getPuissanceActiveDeSortie_AC(), new Timestamp(System.currentTimeMillis()));
+                sqlGestion.mesure("2052.3", new Timestamp(System.currentTimeMillis()));
                 System.out.println("mesure done !");
                 Thread.sleep(60000);
             }
@@ -39,7 +39,7 @@ public class Controller implements Initializable {
             String respond = null;
             try {
             SqlGestion sqlGestion = new SqlGestion();
-            respond = receptionGestion.post(sqlGestion.lastValue());
+            respond = bddDistante.post(sqlGestion.lastValue());
             System.out.println(respond);
             } catch (SQLException e) {
                 System.err.println(e.getMessage());
