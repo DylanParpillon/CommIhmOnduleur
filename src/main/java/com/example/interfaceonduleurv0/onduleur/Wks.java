@@ -1,19 +1,24 @@
 package com.example.interfaceonduleurv0.onduleur;
 
+import com.example.interfaceonduleurv0.Controller;
 import com.example.interfaceonduleurv0.RPI.ModeleQPIGS;
 import com.example.interfaceonduleurv0.RPI.ModeleQPIRI;
 import com.example.interfaceonduleurv0.RPI.ModeleQPIWS;
 import jssc.SerialPortEvent;
 import jssc.SerialPortException;
-
+import org.apache.commons.lang3.ArrayUtils;
 
 import java.nio.charset.StandardCharsets;
-
-import org.apache.commons.lang3.ArrayUtils;
 
 
 public class Wks extends LiaisonSerie {
     //truc
+    Controller  controller ;
+
+    public Wks(Controller controller) {
+        this.controller = controller;
+    }
+
     private final byte[] QPIGS = "QPIGS".getBytes(StandardCharsets.US_ASCII);
     private final byte[] QPIRI = "QPIRI".getBytes(StandardCharsets.US_ASCII);
     private final byte[] QPIWS = "QPIWS".getBytes(StandardCharsets.US_ASCII);
@@ -238,27 +243,21 @@ public class Wks extends LiaisonSerie {
             //
             Thread.sleep(750);
             System.out.println("nbs d 'octets : " + serialPort.getInputBufferBytesCount());
-
             //QPIGS
             if (serialPort.getInputBufferBytesCount() == 110) {
                 qpigsModel();
             }
-
-
             //QPIRI
             if (serialPort.getInputBufferBytesCount() == 104) {
                 Thread.sleep(750);
                 qpiriModel();
+
             }
-
-
             //QPIWS
             if (serialPort.getInputBufferBytesCount() == 40) {
                 Thread.sleep(750);
                 qpiwsModel();
             }
-
-
         } catch (SerialPortException | InterruptedException e) {
             throw new RuntimeException(e);
         }
