@@ -4,7 +4,7 @@ public class ModeleQPIGS {
     private String tensionDuReseau, frequenceDuReseau;
     private String tensionDeSortie_AC, frequenceDeSortie_AC, puissanceApparenteDeSortie_AC, puissanceActiveDeSortie_AC, pourcentageChargeSortie;
     private String tensionBUS, tensionBatterie, courantRechargeBatterie, pourcentageCapaciteBatterie, temperatureDuRadiateurOnduleur, courantEntreePv, tensionEntreePv;
-    private String tentionBatterie, courantDechargeBatterie;
+    private String tensionBatterieSCC, courantDechargeBatterie;
     private String statusMateriel1;
     private String tensionVentilateurs_10mv, versionEEPROM, puissanceChargePv;
     private String statusMateriel2;
@@ -125,12 +125,12 @@ public class ModeleQPIGS {
         this.tensionEntreePv = tensionEntreePv;
     }
 
-    public String getTentionBatterie() {
-        return tentionBatterie;
+    public String getTensionBatterieSCC() {
+        return tensionBatterieSCC;
     }
 
-    public void setTentionBatterie(String tentionBatterie) {
-        this.tentionBatterie = tentionBatterie;
+    public void setTensionBatterieSCC(String tensionBatterieSCC) {
+        this.tensionBatterieSCC = tensionBatterieSCC;
     }
 
     public String getCourantDechargeBatterie() {

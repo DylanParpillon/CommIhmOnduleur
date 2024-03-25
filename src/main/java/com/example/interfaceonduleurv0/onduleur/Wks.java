@@ -80,7 +80,7 @@ public class Wks extends LiaisonSerie {
         qpigs.setTemperatureDuRadiateurOnduleur(dcp[12]);
         qpigs.setCourantEntreePv(dcp[13]);
         qpigs.setTensionEntreePv(dcp[14]);
-        qpigs.setTentionBatterie(dcp[15]);
+        qpigs.setTensionBatterieSCC(dcp[15]);
         qpigs.setCourantDechargeBatterie(dcp[16]);
         qpigs.setStatusMateriel1(dcp[17]);
         qpigs.setTensionVentilateurs_10mv(dcp[18]);
@@ -246,6 +246,11 @@ public class Wks extends LiaisonSerie {
             //QPIGS
             if (serialPort.getInputBufferBytesCount() == 110) {
                 qpigsModel();
+                controller.labelBatterie.setText(qpigs.getPourcentageChargeSortie());
+                controller.labelTensionSortie.setText(qpigs.getTensionDeSortie_AC());
+                controller.labelPhotoEntrer.setText(qpiri.getPuissanceActiveDeSortie_AC());
+                controller.LabelPSortie.setText(qpigs.getPuissanceActiveDeSortie_AC());
+
             }
             //QPIRI
             if (serialPort.getInputBufferBytesCount() == 104) {
@@ -320,16 +325,16 @@ public class Wks extends LiaisonSerie {
         return new byte[]{(byte) (value >>> 8), (byte) value};
     }
 
-    public static int hex_to_int(String s) {
-        String digits = "0123456789ABCDEF";
-        s = s.toUpperCase();
-        int val = 0;
-        for (int i = 0; i < s.length(); i++) {
-            char c = s.charAt(i);
-            int d = digits.indexOf(c);
-            val = 16 * val + d;
-        }
-        return val;
-    }
+//    public static int hex_to_int(String s) {
+//        String digits = "0123456789ABCDEF";
+//        s = s.toUpperCase();
+//        int val = 0;
+//        for (int i = 0; i < s.length(); i++) {
+//            char c = s.charAt(i);
+//            int d = digits.indexOf(c);
+//            val = 16 * val + d;
+//        }
+//        return val;
+//    }
 }
 
