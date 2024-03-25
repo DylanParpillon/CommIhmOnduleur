@@ -34,7 +34,7 @@ public class SqlGestion extends Controller {
     }
 
     public void mesure(String nouvelAC, Timestamp timestamp) throws SQLException {
-         double newAcValue = Double.valueOf(nouvelAC);
+         double newAcValue = Double.parseDouble(nouvelAC);
         ArrayList<Timestamp> saveDate = new ArrayList<>();
         ArrayList<Double> saveAC = new ArrayList<>();
 

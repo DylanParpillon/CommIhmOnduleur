@@ -1,6 +1,5 @@
 package com.example.interfaceonduleurv0.onduleur;
 
-import com.example.interfaceonduleurv0.Controller;
 import com.example.interfaceonduleurv0.RPI.ModeleQPIGS;
 import com.example.interfaceonduleurv0.RPI.ModeleQPIRI;
 import com.example.interfaceonduleurv0.RPI.ModeleQPIWS;
@@ -9,14 +8,14 @@ import jssc.SerialPortException;
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.nio.charset.StandardCharsets;
+import java.sql.SQLException;
 
 
 public class Wks extends LiaisonSerie {
     //truc
-    Controller  controller ;
 
-    public Wks(Controller controller) {
-        this.controller = controller;
+    public Wks() throws SQLException {
+
     }
 
     private final byte[] QPIGS = "QPIGS".getBytes(StandardCharsets.US_ASCII);
@@ -31,7 +30,7 @@ public class Wks extends LiaisonSerie {
     String st_trameBrute;
     String[] dcp;
 
-    public ModeleQPIGS qpigsModel() {
+    public ModeleQPIGS qpigsModel() throws SQLException {
         System.out.println("decodage de QPIGS");
         trameBrute = new byte[110];
 
@@ -247,7 +246,7 @@ public class Wks extends LiaisonSerie {
             if (serialPort.getInputBufferBytesCount() == 110) {
                 qpigsModel();
                 //controller.labelBatterie.setText(qpigs.getPourcentageChargeSortie());
-                //controller.labelTensionSortie.setText(qpigs.getTensionDeSortie_AC());
+                //controller.labelTensionSortie.setText(qpigs.getTensionDeSortie_AC());dd
                 //controller.labelPhotoEntrer.setText(qpiri.getPuissanceActiveDeSortie_AC());
                 //controller.LabelPSortie.setText(qpigs.getPuissanceActiveDeSortie_AC());
 
@@ -263,12 +262,12 @@ public class Wks extends LiaisonSerie {
                 Thread.sleep(750);
                 qpiwsModel();
             }
-        } catch (SerialPortException | InterruptedException e) {
+        } catch (SerialPortException | InterruptedException | SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public void demandeQPIGS() {
+    public ModeleQPIGS demandeQPIGS() {
         System.out.println("demandeQPIGS");
         StringBuilder sb = new StringBuilder();
         byte[] crc = intToByteArray(crc16CcittXmodel(QPIGS));
@@ -278,6 +277,7 @@ public class Wks extends LiaisonSerie {
         System.out.println("Demande (hexa)  -> " + sb);
         System.out.println("Demande (acsii) -> " + new String(ArrayUtils.add(ArrayUtils.addAll(QPIGS, crc), CR)));
         super.ecrire(ArrayUtils.add(ArrayUtils.addAll(QPIGS, crc), CR));
+        return qpigs;
     }
 
     public void demandeQPIRI() {

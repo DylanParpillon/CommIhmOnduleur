@@ -26,7 +26,6 @@ public class DonneRecup {
         this.date = sdf.format(date);
 
     }
-
     public double getEuro() {
         return euro;
     }
