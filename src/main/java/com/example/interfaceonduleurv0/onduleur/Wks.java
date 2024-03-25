@@ -246,10 +246,10 @@ public class Wks extends LiaisonSerie {
             //QPIGS
             if (serialPort.getInputBufferBytesCount() == 110) {
                 qpigsModel();
-                //controller.labelBatterie.setText(qpigs.getPourcentageChargeSortie());
-                //controller.labelTensionSortie.setText(qpigs.getTensionDeSortie_AC());
-                //controller.labelPhotoEntrer.setText(qpiri.getPuissanceActiveDeSortie_AC());
-                //controller.LabelPSortie.setText(qpigs.getPuissanceActiveDeSortie_AC());
+                controller.labelBatterie.setText(qpigs.getPourcentageChargeSortie());
+                controller.labelTensionSortie.setText(qpigs.getTensionDeSortie_AC());
+                controller.LabelPSortie.setText(qpigs.getPuissanceActiveDeSortie_AC());
+                controller.labelPhotoEntrer.setText(qpiri.getPuissanceActiveDeSortie_AC());
 
             }
             //QPIRI

@@ -62,7 +62,7 @@ public class Controller implements Initializable {
        // new Thread(() -> {launchData();}).start();
         
         try {
-            wks.initCom("COM7");
+            wks.initCom("COM3");
             wks.configurerParametres(2400, 8, 0, 1);
             bdt.scheduleAtFixedRate(timerTaskQPIGS, 0, 10000);
             bdt.scheduleAtFixedRate(timerTaskQPIRI,2000,10000);
@@ -76,7 +76,7 @@ public class Controller implements Initializable {
             try {
             while (true) {
                 SqlGestion sqlGestion = new SqlGestion();
-                sqlGestion.mesure("2052.3", new Timestamp(System.currentTimeMillis()));
+               // sqlGestion.mesure("2052.3", new Timestamp(System.currentTimeMillis()));
                 System.out.println("mesure done !");
                 Thread.sleep(60000);
             }
