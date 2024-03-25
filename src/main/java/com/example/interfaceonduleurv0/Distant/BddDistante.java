@@ -10,8 +10,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 public class BddDistante {
-    private String url1;
-    String line;
     private String adress2 = "http://10.0.0.172:8080/insertinverter"; // adresse serv quand onduleur create
     private String adress = "http://10.0.0.172:8080/insertearning"; // adresse serv
 

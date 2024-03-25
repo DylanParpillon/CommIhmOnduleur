@@ -31,7 +31,9 @@ public class Controller implements Initializable {
     public Label LabelGainM;
     public Label labelGainJ;
     Timer bdt = new Timer();
-    
+     /*Scanner sc = new Scanner(System.in);
+     SerialPort serialPort;*/
+
     Wks wks = new Wks(this);
     TimerTask timerTaskQPIGS = new TimerTask() {
         @Override
@@ -51,12 +53,16 @@ public class Controller implements Initializable {
             wks.demandeQPIWS();
         }
     };
+
+    public Controller() throws SQLException {
+    }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
        // new Thread(() -> {launchData();}).start();
         
         try {
-            wks.initCom("COM3");
+            wks.initCom("COM7");
             wks.configurerParametres(2400, 8, 0, 1);
             bdt.scheduleAtFixedRate(timerTaskQPIGS, 0, 10000);
             bdt.scheduleAtFixedRate(timerTaskQPIRI,2000,10000);
@@ -68,13 +74,13 @@ public class Controller implements Initializable {
         //rentrer d'une mesure nouvelle mesure
         new Thread(() -> {
             try {
-            SqlGestion sqlGestion = new SqlGestion();
             while (true) {
+                SqlGestion sqlGestion = new SqlGestion();
                 sqlGestion.mesure("2052.3", new Timestamp(System.currentTimeMillis()));
                 System.out.println("mesure done !");
                 Thread.sleep(60000);
             }
-            } catch (SQLException | InterruptedException ex) {
+            } catch (InterruptedException | SQLException ex) {
                 throw new RuntimeException(ex);
             }
         }).start();
@@ -82,7 +88,7 @@ public class Controller implements Initializable {
         new Thread(() -> {
             String respond = null;
             try {
-            SqlGestion sqlGestion = new SqlGestion();
+                SqlGestion sqlGestion = new SqlGestion();
             respond = bddDistante.post(sqlGestion.lastValue());
             System.out.println(respond);
             } catch (SQLException e) {

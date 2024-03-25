@@ -11,7 +11,7 @@ public class SqlConn {
     public Connection getConnTestBdd(){
         try {
             Class.forName("org.sqlite.JDBC");
-            conn = DriverManager.getConnection("jdbc:sqlite:C:/Users/didou/Desktop/Projet/JavaFX/interfaceOnduleurV0/src/onduleur.db");
+            conn = DriverManager.getConnection("jdbc:sqlite:onduleur.db");
             System.out.println("Connexion Sql done ");
         } catch (SQLException | ClassNotFoundException e) {
             System.err.println(e.getMessage() + "   Erreur Connexion SQL");
