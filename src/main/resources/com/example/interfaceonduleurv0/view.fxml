@@ -92,8 +92,8 @@
             </GridPane>
             <VBox prefHeight="264.0" prefWidth="481.0">
                <children>
-                  <ChoiceBox prefWidth="150.0" />
-                  <LineChart>
+                  <ChoiceBox fx:id="choiceBoxDate" prefWidth="150.0" />
+                  <LineChart fx:id="chartId">
                     <xAxis>
                       <CategoryAxis side="BOTTOM" />
                     </xAxis>

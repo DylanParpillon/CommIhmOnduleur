@@ -4,16 +4,19 @@ import com.example.interfaceonduleurv0.Distant.BddDistante;
 import com.example.interfaceonduleurv0.RPI.ModeleQPIGS;
 import com.example.interfaceonduleurv0.SQl.SqlGestion;
 import com.example.interfaceonduleurv0.onduleur.Wks;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.Initializable;
+import javafx.scene.chart.LineChart;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import jssc.SerialPortException;
 
 import java.net.URL;
 import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.util.Objects;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -32,8 +35,11 @@ public class Controller implements Initializable {
     public Label labelGainH;
     public Label LabelGainM;
     public Label labelGainJ;
+    public ChoiceBox choiceBoxDate;
+    public LineChart chartId;
     Timer bdt = new Timer();
     String saveTest;
+    ArrayList<DonneRecup> stockValeurEnvoie = new ArrayList<>();
      /*Scanner sc = new Scanner(System.in);
      SerialPort serialPort;*/
 
@@ -67,7 +73,7 @@ public class Controller implements Initializable {
         try {
             wks.initCom("COM7");
             wks.configurerParametres(2400, 8, 0, 1);
-            bdt.scheduleAtFixedRate(timerTaskQPIGS, 60000, 10000);
+            bdt.scheduleAtFixedRate(timerTaskQPIGS, 6000, 10000);
             //bdt.scheduleAtFixedRate(timerTaskQPIRI,6000,10000);
             //bdt.scheduleAtFixedRate(timerTaskQPIWS, 6000, 10000);
         } catch (SerialPortException e) {
@@ -75,26 +81,47 @@ public class Controller implements Initializable {
         }
         new Thread(()->{
             try {
+                SqlGestion sqlGestion = new SqlGestion();
+                ArrayList<String> list = sqlGestion.getAllDate();
+                System.out.println(list);
+                ObservableList<String> ObList = FXCollections.observableList(list);
+                               choiceBoxDate.setItems(ObList);
+
+            } catch (SQLException e) {
+                System.err.println(e.getMessage());
+            }
+        }).start();
+        /*new Thread(()->{
+            try {
                 while (true) {
-                    Thread.sleep(60000);
+                    Thread.sleep(6000);
                     SqlGestion sqlGestion = new SqlGestion();
                     if (modeleQPIGS.getPuissanceActiveDeSortie_AC() != null) {
                         System.out.println("modele no null " + modeleQPIGS.getPuissanceActiveDeSortie_AC());
                         if (!Objects.equals(modeleQPIGS.getPuissanceActiveDeSortie_AC(), saveTest)) {
                             saveTest = modeleQPIGS.getPuissanceActiveDeSortie_AC();
                             System.out.println("Puissance diff");
-                            sqlGestion.mesure(modeleQPIGS.getPuissanceActiveDeSortie_AC(), new Timestamp(System.currentTimeMillis()));
+                            stockValeurEnvoie.add(sqlGestion.mesure(modeleQPIGS.getPuissanceActiveDeSortie_AC(), new Timestamp(System.currentTimeMillis())));
                             System.out.println("Mesure effectuer");
                         }
                     }
-
                 }
             } catch (SQLException e) {
                 System.err.println(e + "erreur Sql");
             } catch (InterruptedException e) {
+               System.err.println(e + " interrupted Excpt");
+            }
+        }).start();*/ //mesure
+
+        /*new Thread(()->{
+            try {
+                Thread.sleep(60000);
+                bddDistante.post(stockValeurEnvoie);
+                stockValeurEnvoie.clear();
+            } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
-        }).start();
+        }).start();*/ //envoie
 
     }
 }

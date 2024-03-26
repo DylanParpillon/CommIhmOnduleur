@@ -8,32 +8,51 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 public class SqlGestion extends Controller {
-    private SqlConn sqlConn = new SqlConn();
-    private Connection connection = sqlConn.getConnTestBdd();
-    private PreparedStatement requeteAll = connection.prepareStatement("SELECT * FROM calculs");
-    private PreparedStatement requete1 = connection.prepareStatement("SELECT * FROM calculs ORDER BY id_calcul DESC LIMIT ?"),
-            requete2 = connection.prepareStatement("SELECT * FROM calculs WHERE date <= ? and date >= ?"),
-            requete3 = connection.prepareStatement("INSERT INTO calculs(id_calcul,energie,gain,date) VALUES(null,?,?,?)");
-    private PreparedStatement updatePrix = connection.prepareStatement("UPDATE prix set prix = ? where id_prix = 1");
+    private SqlConn sqlConn ;
+    private Connection connection;
 
-    private PreparedStatement mesureAcs = connection.prepareStatement("SELECT * FROM mesures"),
-            switchUtoD = connection.prepareStatement("UPDATE mesures set Ss_AC = ? , date = ? where id_mesure = ?");
+    private PreparedStatement requeteAll , requete1 , requete2, requete3 ,updatePrix , mesureAcs , switchUtoD , requeteDates ;
     private double energie;
     private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     public SqlGestion() throws SQLException {
+        sqlConn =  new SqlConn();
+        connection  = sqlConn.getConnTestBdd();
+        requeteAll = connection.prepareStatement("SELECT * FROM calculs");
+        requete1 = connection.prepareStatement("SELECT * FROM calculs ORDER BY id_calcul DESC LIMIT ?");
+                requete2 = connection.prepareStatement("SELECT * FROM calculs WHERE date <= ? and date >= ?");
+                requete3 = connection.prepareStatement("INSERT INTO calculs(id_calcul,energie,gain,date) VALUES(null,?,?,?)");
+        updatePrix = connection.prepareStatement("UPDATE prix set prix = ? where id_prix = 1");
+        mesureAcs = connection.prepareStatement("SELECT * FROM mesures");
+                switchUtoD = connection.prepareStatement("UPDATE mesures set Ss_AC = ? , date = ? where id_mesure = ?");
+                requeteDates = connection.prepareStatement("select substr(date,0,5) as annee from calculs group by annee order by annee desc ");
+
     }
 
     //insert les valeurs
-    private void stockValeur() throws SQLException {
+    private DonneRecup stockValeur(String ts) throws SQLException {
+        DonneRecup dr = new DonneRecup();
         ResultSet rs = connection.prepareStatement("SELECT * FROM prix").executeQuery();
+        double gain = rs.getDouble("prix") * energie;
         requete3.setDouble(1, energie);
-        requete3.setDouble(2, rs.getDouble("prix") * energie);
-        requete3.setString(3, sdf.format(new Timestamp(System.currentTimeMillis())));
+        requete3.setDouble(2, gain);
+        requete3.setString(3, ts);
         requete3.executeUpdate();
+        dr.setEuro(gain);
+        dr.setKilowatter(energie);
+        return dr;
     }
 
-    public void mesure(String nouvelAC, Timestamp timestamp) throws SQLException {
+    public ArrayList<String> getAllDate() throws SQLException {
+ArrayList<String> dates = new ArrayList<>();
+        ResultSet rs = requeteDates.executeQuery();
+        while (rs.next()) {
+            dates.add(rs.getString("annee"));
+        }
+        return dates;
+    }
+
+    public DonneRecup mesure(String nouvelAC, Timestamp timestamp) throws SQLException {
          double newAcValue = Double.parseDouble(nouvelAC);
         ArrayList<Timestamp> saveDate = new ArrayList<>();
         ArrayList<Double> saveAC = new ArrayList<>();
@@ -56,14 +75,14 @@ public class SqlGestion extends Controller {
         double delta = Math.abs((saveDate.get(1).getTime() - saveDate.get(0).getTime()));
         if(delta != 0) energie = (saveAC.get(0) / delta) ;
         else energie = 0;
-        stockValeur();
+        DonneRecup dr = stockValeur(sdf.format(timestamp));
 
         //mettre la nouvelle valeur a 2
         switchUtoD.setDouble(1, newAcValue);
         switchUtoD.setString(2, sdf.format(timestamp));
         switchUtoD.setInt(3, 2);
         switchUtoD.executeUpdate();
-
+         return dr;
     }
 
     public void fixerPrix(double prix) throws SQLException {
@@ -78,7 +97,6 @@ public class SqlGestion extends Controller {
             dc.setDate(rs.getDate("date"));
             dc.setEuro(rs.getDouble("gain"));
             dc.setKilowatter(rs.getDouble("energie"));
-
             tblvalue.add(dc);
         }
         return tblvalue;

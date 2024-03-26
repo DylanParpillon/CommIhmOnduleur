@@ -1,12 +1,13 @@
 package com.example.interfaceonduleurv0.SQl;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class SqlConn {
     Connection conn = null;
-    public SqlConn() {
 
+    public SqlConn( ) {
     }
     public Connection getConnTestBdd(){
         try {
