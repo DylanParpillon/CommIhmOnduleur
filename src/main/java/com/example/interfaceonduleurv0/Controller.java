@@ -15,7 +15,7 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import jssc.SerialPortException;
-
+import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -92,6 +92,7 @@ public class Controller implements Initializable {
                 System.out.println(list);
                 ObservableList<String> ObList = FXCollections.observableList(list);
                 choiceBoxDate.setItems(ObList);
+
             } catch (SQLException e) {
                 System.err.println(e.getMessage());
             }
@@ -103,31 +104,25 @@ public class Controller implements Initializable {
                     Thread.sleep(60000);
                     SqlGestion sqlGestion = new SqlGestion();
                     ArrayList<String> puissanceAc = new ArrayList<>();
-                        for(ModeleQPIGS  qpigs : dataQPIGS) puissanceAc.add(qpigs.getPuissanceActiveDeSortie_AC());
-
+                        for(ModeleQPIGS  qpigs : dataQPIGS){ puissanceAc.add(qpigs.getPuissanceActiveDeSortie_AC());}
                             saveTest = modeleQPIGS.getPuissanceActiveDeSortie_AC();
                             System.out.println("Puissance diff");
                             stockValeurEnvoie = sqlGestion.mesure(puissanceAc, new Timestamp(System.currentTimeMillis()));
                             System.out.println("Mesure effectuer");
-                    bddDistante.post(stockValeurEnvoie);
-                    stockValeurEnvoie.clear();
+
+                            if (bddDistante.connection()) {
+                                bddDistante.post(stockValeurEnvoie);
+                                stockValeurEnvoie.clear();
+                            }
                 }
             } catch (SQLException e) {
                 System.err.println(e + "erreur Sql");
             } catch (InterruptedException e) {
                System.err.println(e + " interrupted Excpt");
+            } catch (IOException e) {
+                System.err.println(e + "erreur connection? ");
             }
         }).start();
-
-        /*new Thread(()->{
-            try {
-                Thread.sleep(60000);
-               stockValeurEnvoie
-
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-        }).start();*/ //envoie
 
     }
 }

@@ -69,26 +69,26 @@ ArrayList<String> dates = new ArrayList<>();
                 saveDate.add(dateS);
                 saveAC.add(AC);
             }
-
             //faire remonter la valeur du dessous a au dessus
-            switchUtoD.setDouble(1, saveAC.get(1));
-            switchUtoD.setString(2, sdf.format(saveDate.get(1)));
-            switchUtoD.setInt(3, 1);
-            switchUtoD.executeUpdate();
+            switchUtoDM(saveAC.get(1), sdf.format(saveDate.get(1)),1);
             //calculer ac avec le delta
             double delta = Math.abs((saveDate.get(1).getTime() - saveDate.get(0).getTime()));
+
             if (delta != 0) energie = (saveAC.get(0) / delta);
             else energie = 0;
+
            DonneRecup donneRecup = stockValeur(sdf.format(timestamp));
             dr.add(donneRecup);
-
             //mettre la nouvelle valeur a 2
-            switchUtoD.setString(1, newAC);
-            switchUtoD.setString(2, sdf.format(timestamp));
-            switchUtoD.setDouble(3, 2);
-            switchUtoD.executeUpdate();
+            switchUtoDM(newAcValue,sdf.format(timestamp),2);
         }
         return dr;
+    }
+    public void switchUtoDM (Double ac , String date,int i  ) throws SQLException {
+        switchUtoD.setDouble(1, ac);
+        switchUtoD.setString(2, date);
+        switchUtoD.setInt(3, i);
+        switchUtoD.executeUpdate();
     }
 
     public void fixerPrix(double prix) throws SQLException {

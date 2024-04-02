@@ -3,6 +3,7 @@ package com.example.interfaceonduleurv0.Distant;
 import com.example.interfaceonduleurv0.DonneRecup;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.io.IOException;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -12,16 +13,23 @@ import java.util.ArrayList;
 public class BddDistante {
     private String adress2 = "http://10.0.0.172:8080/insertinverter"; // adresse serv quand onduleur create
     private String adress = "http://10.0.0.172:8080/insertearning"; // adresse serv
+    HttpURLConnection connection ;
 
     public BddDistante(String adress) {
         //this.adress = adress;
     }
+    public boolean connection () throws IOException {
+        boolean connected ;
+        URL url = new URL(adress);
+        // Ouvrir une connexion HTTP
+        connection =  (HttpURLConnection) url.openConnection();
+        if (connection.getResponseCode() == 200) connected = true; else connected = false;
+        return connected;
+    }
 
     public String post(ArrayList<DonneRecup> values) {
         try {
-            URL url = new URL(adress);
-            // Ouvrir une connexion HTTP
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+
 
             // Paramétrer la méthode de requête
             connection.setRequestMethod("POST");
