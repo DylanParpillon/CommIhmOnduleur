@@ -21,7 +21,7 @@ public class SqlGestion extends Controller {
         requeteAll = connection.prepareStatement("SELECT * FROM calculs order by date asc");
         requete1 = connection.prepareStatement("SELECT * FROM calculs ORDER BY id_calcul DESC LIMIT ?");
                 requete2 = connection.prepareStatement("SELECT * FROM calculs WHERE date <= ? and date >= ?");
-                requete3 = connection.prepareStatement("INSERT INTO calculs(id_calcul,energie,gain,date) VALUES(null,?,?,?)");
+                requete3 = connection.prepareStatement("UPDATE calculs set date = ? , energie = ? , gain = ? where ROWID = ?");
         updatePrix = connection.prepareStatement("UPDATE prix set prix = ? where id_prix = 1");
         mesureAcs = connection.prepareStatement("SELECT * FROM mesures");
                 switchUtoD = connection.prepareStatement("UPDATE mesures set Ss_AC = ? , date = ? where id_mesure = ?");
@@ -30,7 +30,7 @@ public class SqlGestion extends Controller {
     }
 
     //insert les valeurs
-    private DonneRecup stockValeur(String ts) throws SQLException {
+    private DonneRecup stockValeur(String ts ) throws SQLException {
         DonneRecup dr = new DonneRecup();
         ResultSet rs = connection.prepareStatement("SELECT * FROM prix").executeQuery();
         double gain = rs.getDouble("prix") * energie;
@@ -52,37 +52,44 @@ ArrayList<String> dates = new ArrayList<>();
         return dates;
     }
 
-    public DonneRecup mesure(String nouvelAC, Timestamp timestamp) throws SQLException {
-         double newAcValue = Double.parseDouble(nouvelAC);
-        ArrayList<Timestamp> saveDate = new ArrayList<>();
-        ArrayList<Double> saveAC = new ArrayList<>();
+    public ArrayList<DonneRecup> mesure(ArrayList<String> newACs, Timestamp timestamp) throws SQLException {
+        ArrayList<DonneRecup> dr = new ArrayList<>();
+        int i = 1;
+        for (String newAC : newACs) {
+            double newAcValue = Double.parseDouble(newAC);
+            ArrayList<Timestamp> saveDate = new ArrayList<>();
+            ArrayList<Double> saveAC = new ArrayList<>();
 
-        //save des 2 valeurs de la bdd dans des tableaux
-        ResultSet rs = mesureAcs.executeQuery();
-        while (rs.next()) {
-            Timestamp dateS = rs.getTimestamp("date");
-            double AC = rs.getDouble("Ss_AC");
-            saveDate.add(dateS);
-            saveAC.add(AC);
+            //save des 2 valeurs de la bdd dans des tableaux
+            ResultSet rs = mesureAcs.executeQuery();
+            while (rs.next()) {
+                Timestamp dateS = rs.getTimestamp("date");
+                double AC = rs.getDouble("Ss_AC");
+                saveDate.add(dateS);
+                saveAC.add(AC);
+            }
+
+            //faire remonter la valeur du dessous a au dessus
+            switchUtoD.setDouble(1, saveAC.get(1));
+            switchUtoD.setString(2, sdf.format(saveDate.get(1)));
+            switchUtoD.setInt(3, 1);
+            switchUtoD.executeUpdate();
+            //calculer ac avec le delta
+            double delta = Math.abs((saveDate.get(1).getTime() - saveDate.get(0).getTime()));
+            if (delta != 0) energie = (saveAC.get(0) / delta);
+            else energie = 0;
+           DonneRecup donneRecup = stockValeur(sdf.format(timestamp));
+            dr.add(donneRecup);
+
+            //mettre la nouvelle valeur a 2
+            switchUtoD.setString(1, sdf.format(timestamp));
+            switchUtoD.setString(2, newAC);
+            switchUtoD.setDouble(3, donneRecup.getEuro());
+            switchUtoD.setInt(4, i);
+            switchUtoD.executeUpdate();
+           i++;
         }
-
-        //faire remonter la valeur du dessous a au dessus
-        switchUtoD.setDouble(1, saveAC.get(1));
-        switchUtoD.setString(2, sdf.format(saveDate.get(1)));
-        switchUtoD.setInt(3, 1);
-        switchUtoD.executeUpdate();
-        //calculer ac avec le delta
-        double delta = Math.abs((saveDate.get(1).getTime() - saveDate.get(0).getTime()));
-        if(delta != 0) energie = (saveAC.get(0) / delta) ;
-        else energie = 0;
-        DonneRecup dr = stockValeur(sdf.format(timestamp));
-
-        //mettre la nouvelle valeur a 2
-        switchUtoD.setDouble(1, newAcValue);
-        switchUtoD.setString(2, sdf.format(timestamp));
-        switchUtoD.setInt(3, 2);
-        switchUtoD.executeUpdate();
-         return dr;
+        return dr;
     }
 
     public void fixerPrix(double prix) throws SQLException {

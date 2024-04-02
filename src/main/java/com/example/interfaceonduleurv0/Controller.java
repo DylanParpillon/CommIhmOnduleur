@@ -91,7 +91,6 @@ public class Controller implements Initializable {
                 System.out.println(list);
                 ObservableList<String> ObList = FXCollections.observableList(list);
                 choiceBoxDate.setItems(ObList);
-
             } catch (SQLException e) {
                 System.err.println(e.getMessage());
             }
