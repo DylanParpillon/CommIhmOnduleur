@@ -18,6 +18,7 @@ import jssc.SerialPortException;
 
 import java.net.URL;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.Timer;
@@ -86,7 +87,7 @@ public class Controller implements Initializable {
         }
         new Thread(()->{
             try {
-                SqlGestion sqlGestion = new SqlGestion();
+                        SqlGestion sqlGestion = new SqlGestion();
                 ArrayList<String> list = sqlGestion.getAllDate();
                 System.out.println(list);
                 ObservableList<String> ObList = FXCollections.observableList(list);
@@ -95,33 +96,34 @@ public class Controller implements Initializable {
                 System.err.println(e.getMessage());
             }
         }).start();
-        /*new Thread(()->{
+        //mesure
+        new Thread(()->{
             try {
                 while (true) {
-                    Thread.sleep(6000);
+                    Thread.sleep(60000);
                     SqlGestion sqlGestion = new SqlGestion();
-                    if (modeleQPIGS.getPuissanceActiveDeSortie_AC() != null) {
-                        System.out.println("modele no null " + modeleQPIGS.getPuissanceActiveDeSortie_AC());
-                        if (!Objects.equals(modeleQPIGS.getPuissanceActiveDeSortie_AC(), saveTest)) {
+                    ArrayList<String> puissanceAc = new ArrayList<>();
+                        for(ModeleQPIGS  qpigs : dataQPIGS) puissanceAc.add(qpigs.getPuissanceActiveDeSortie_AC());
+
                             saveTest = modeleQPIGS.getPuissanceActiveDeSortie_AC();
                             System.out.println("Puissance diff");
-                            stockValeurEnvoie.add(sqlGestion.mesure(modeleQPIGS.getPuissanceActiveDeSortie_AC(), new Timestamp(System.currentTimeMillis())));
+                            stockValeurEnvoie = sqlGestion.mesure(puissanceAc, new Timestamp(System.currentTimeMillis()));
                             System.out.println("Mesure effectuer");
-                        }
-                    }
+                    bddDistante.post(stockValeurEnvoie);
+                    stockValeurEnvoie.clear();
                 }
             } catch (SQLException e) {
                 System.err.println(e + "erreur Sql");
             } catch (InterruptedException e) {
                System.err.println(e + " interrupted Excpt");
             }
-        }).start();*/ //mesure
+        }).start();
 
         /*new Thread(()->{
             try {
                 Thread.sleep(60000);
-                bddDistante.post(stockValeurEnvoie);
-                stockValeurEnvoie.clear();
+               stockValeurEnvoie
+
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }

@@ -30,13 +30,14 @@ public class SqlGestion extends Controller {
     }
 
     //insert les valeurs
-    private DonneRecup stockValeur(String ts ) throws SQLException {
+    private DonneRecup stockValeur(String ts) throws SQLException {
         DonneRecup dr = new DonneRecup();
         ResultSet rs = connection.prepareStatement("SELECT * FROM prix").executeQuery();
         double gain = rs.getDouble("prix") * energie;
-        requete3.setDouble(1, energie);
-        requete3.setDouble(2, gain);
-        requete3.setString(3, ts);
+        requete3.setString(1, ts);
+        requete3.setDouble(2, energie);
+        requete3.setDouble(3, gain);
+        requete3.setInt(4,1);
         requete3.executeUpdate();
         dr.setEuro(gain);
         dr.setKilowatter(energie);
@@ -82,12 +83,10 @@ ArrayList<String> dates = new ArrayList<>();
             dr.add(donneRecup);
 
             //mettre la nouvelle valeur a 2
-            switchUtoD.setString(1, sdf.format(timestamp));
-            switchUtoD.setString(2, newAC);
-            switchUtoD.setDouble(3, donneRecup.getEuro());
-            switchUtoD.setInt(4, i);
+            switchUtoD.setString(1, newAC);
+            switchUtoD.setString(2, sdf.format(timestamp));
+            switchUtoD.setDouble(3, 2);
             switchUtoD.executeUpdate();
-           i++;
         }
         return dr;
     }
