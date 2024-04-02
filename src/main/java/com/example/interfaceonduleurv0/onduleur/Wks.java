@@ -87,7 +87,9 @@ Controller ctrl ;
         qpigs.setVersionEEPROM(dcp[19]);
         qpigs.setPuissanceChargePv(dcp[19]);
         ctrl.dataQPIGS.add(qpigs);
-
+        ctrl.labelBatterie.setText(qpigs.getPourcentageCapaciteBatterie());
+        ctrl.labelTensionSortie.setText(qpigs.getTensionDeSortie_AC());
+        ctrl.labelBatterie.setText(qpigs.getPuissanceActiveDeSortie_AC());
         return qpigs;
     }
     public ModeleQPIRI qpiriModel() {
