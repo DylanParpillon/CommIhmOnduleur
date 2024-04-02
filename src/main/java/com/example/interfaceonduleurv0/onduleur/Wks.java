@@ -86,6 +86,8 @@ Controller ctrl ;
         qpigs.setTensionVentilateurs_10mv(dcp[18]);
         qpigs.setVersionEEPROM(dcp[19]);
         qpigs.setPuissanceChargePv(dcp[19]);
+        ctrl.dataQPIGS.add(qpigs);
+
         return qpigs;
     }
     public ModeleQPIRI qpiriModel() {
@@ -137,6 +139,7 @@ Controller ctrl ;
             qpiri.setPlageDeTensionEntree(dcp[15]);
             qpiri.setPrioriteSourceDeSortie(dcp[16]);
             qpiri.setPrioriteSourceDuChargeur(dcp[17]);
+            ctrl.dataQPIRI.add(qpiri);
         }
         return qpiri;
     }
@@ -233,6 +236,7 @@ Controller ctrl ;
             qpiws.setDefautSurchargeMPPT3(String.valueOf(dcp[0].toCharArray()[35]));
             qpiws.setAvertissementSurchargeMPPT3(String.valueOf(dcp[0].toCharArray()[36]));
             qpiws.setBatterieTropFaiblePourEtreChargee3(String.valueOf(dcp[0].toCharArray()[37]));
+            ctrl.dataQPIWS.add(qpiws);
         }
        return qpiws;
     }

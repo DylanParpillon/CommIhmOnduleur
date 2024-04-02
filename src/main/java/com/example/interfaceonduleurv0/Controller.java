@@ -41,9 +41,9 @@ public class Controller implements Initializable {
     public ChoiceBox choiceBoxDate;
     public LineChart chartId;
     Timer bdt = new Timer();
-    ArrayList<ModeleQPIGS> dataQPIGS = new ArrayList<>();
-    ArrayList<ModeleQPIRI> dataQPIRI = new ArrayList<>();
-    ArrayList<ModeleQPIWS> dataQPIWS = new ArrayList<>();
+    public ArrayList<ModeleQPIGS> dataQPIGS = new ArrayList<>();
+    public ArrayList<ModeleQPIRI> dataQPIRI = new ArrayList<>();
+    public ArrayList<ModeleQPIWS> dataQPIWS = new ArrayList<>();
     String saveTest;
     ArrayList<DonneRecup> stockValeurEnvoie = new ArrayList<>();
      /*Scanner sc = new Scanner(System.in);
@@ -77,7 +77,7 @@ public class Controller implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
        // new Thread(() -> {launchData();}).start();
         try {
-            wks.initCom("COM7");
+            wks.initCom("COM3");
             wks.configurerParametres(2400, 8, 0, 1);
             bdt.scheduleAtFixedRate(timerTaskQPIGS, 0, 10000);
             //bdt.scheduleAtFixedRate(timerTaskQPIRI,2000,10000);
