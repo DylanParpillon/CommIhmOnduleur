@@ -31,7 +31,7 @@ public class Controller implements Initializable {
     public VBox mainLayout;
     public Label labelBatterie;
     public Label labelPhotoEntrer;
-    public Label LabelPSortie;
+    public Label labelPSortie;
     public Label labelTensionSortie;
     public Label labelStatut;
     public Label labelGainI;
