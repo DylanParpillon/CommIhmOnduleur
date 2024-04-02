@@ -2,7 +2,6 @@ package com.example.interfaceonduleurv0.Distant;
 
 import com.example.interfaceonduleurv0.DonneRecup;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
@@ -10,63 +9,78 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
+/**
+ * Cette classe gère l'envoi de données à une base de données distante via des requêtes HTTP.
+ */
 public class BddDistante {
-    private String adress2 = "http://10.0.0.172:8080/insertinverter"; // adresse serv quand onduleur create
-    private String adress = "http://10.0.0.172:8080/insertearning"; // adresse serv
-    HttpURLConnection connection ;
 
-    public BddDistante(String adress) {
-        //this.adress = adress;
+    /** Adresse du service distant pour l'insertion des données de l'onduleur. */
+    private String addressInverter = "http://10.0.0.172:8080/insertinverter";
+
+    /** Adresse du service distant pour l'insertion des gains. */
+    private String addressEarning = "http://10.0.0.172:8080/insertearning";
+
+    /** Connexion HTTP. */
+    HttpURLConnection connection;
+
+    /**
+     * Constructeur de la classe BddDistante.
+     *
+     * @param address l'adresse du service distant
+     */
+    public BddDistante(String address) {
+        //this.address = address;
     }
-    public boolean connection () throws IOException {
-        boolean connected ;
-        URL url = new URL(adress);
-        // Ouvrir une connexion HTTP
-        connection =  (HttpURLConnection) url.openConnection();
-        if (connection.getResponseCode() == 200) connected = true; else connected = false;
+
+    /**
+     * Établit une connexion avec le service distant.
+     *
+     * @return true si la connexion est établie avec succès, false sinon
+     * @throws IOException si une erreur d'entrée/sortie se produit lors de l'établissement de la connexion
+     */
+    public boolean connection() throws IOException {
+        URL url = new URL(addressEarning);
+        connection = (HttpURLConnection) url.openConnection();
+        boolean connected = (connection.getResponseCode() == 200);
         return connected;
     }
 
+    /**
+     * Envoie les données spécifiées à la base de données distante.
+     *
+     * @param values les valeurs à envoyer à la base de données
+     * @return une chaîne de caractères représentant la réponse du serveur
+     */
     public String post(ArrayList<DonneRecup> values) {
         try {
-
-
-            // Paramétrer la méthode de requête
+            // Paramètres de la requête HTTP POST
             connection.setRequestMethod("POST");
-
-            // Indiquer que le contenu de la requête est du JSON
             connection.setRequestProperty("Content-Type", "application/json");
-
-            // Activer l'envoi et la réception de données
             connection.setDoOutput(true);
-            ArrayList<String> data = new ArrayList<>();
+
+            // Conversion des données en format JSON et envoi
             ObjectMapper objectMapper = new ObjectMapper();
-            //pour chaque données les  mets en format json les stocks dans un tableau
             for (DonneRecup b : values) {
-                data.add(objectMapper.writeValueAsString(b));
-                System.out.println(data);
-            }
-            // Obtenir le flux de sortie de la connexion
-
+                String jsonData = objectMapper.writeValueAsString(b);
+                byte[] input = jsonData.getBytes(StandardCharsets.UTF_8);
                 try (OutputStream os = connection.getOutputStream()) {
-                    for (String datat : data) {
-                        // Écrire les données JSON dans le flux de sortie
-                        byte[] input = datat.getBytes(StandardCharsets.UTF_8);
-                        os.write(input, 0, input.length);
-                        os.flush();
-                    }
+                    os.write(input, 0, input.length);
+                    os.flush();
                 }
-
-            int responseCode = connection.getResponseCode();
-                if (responseCode == 200) System.out.println("Les données on bienétais envoyer !!");
-
-            // Fermer la connexion
-            connection.disconnect();
-            } catch(Exception e){
-                System.err.println(e.getMessage());
             }
+
+            // Récupération et traitement de la réponse du serveur
+            int responseCode = connection.getResponseCode();
+            if (responseCode == 200) {
+                System.out.println("Les données ont été envoyées avec succès !");
+            }
+
+            // Fermeture de la connexion
+            connection.disconnect();
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+        }
 
         return null;
     }
 }
-
