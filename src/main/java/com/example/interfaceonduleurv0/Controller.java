@@ -2,6 +2,8 @@ package com.example.interfaceonduleurv0;
 
 import com.example.interfaceonduleurv0.Distant.BddDistante;
 import com.example.interfaceonduleurv0.RPI.ModeleQPIGS;
+import com.example.interfaceonduleurv0.RPI.ModeleQPIRI;
+import com.example.interfaceonduleurv0.RPI.ModeleQPIWS;
 import com.example.interfaceonduleurv0.SQl.SqlGestion;
 import com.example.interfaceonduleurv0.onduleur.Wks;
 import javafx.collections.FXCollections;
@@ -38,12 +40,15 @@ public class Controller implements Initializable {
     public ChoiceBox choiceBoxDate;
     public LineChart chartId;
     Timer bdt = new Timer();
+    ArrayList<ModeleQPIGS> dataQPIGS = new ArrayList<>();
+    ArrayList<ModeleQPIRI> dataQPIRI = new ArrayList<>();
+    ArrayList<ModeleQPIWS> dataQPIWS = new ArrayList<>();
     String saveTest;
     ArrayList<DonneRecup> stockValeurEnvoie = new ArrayList<>();
      /*Scanner sc = new Scanner(System.in);
      SerialPort serialPort;*/
 
-    Wks wks = new Wks();
+    Wks wks = new Wks(this);
     ModeleQPIGS modeleQPIGS = new ModeleQPIGS();
     TimerTask timerTaskQPIGS = new TimerTask(){
         @Override
@@ -73,9 +78,9 @@ public class Controller implements Initializable {
         try {
             wks.initCom("COM7");
             wks.configurerParametres(2400, 8, 0, 1);
-            bdt.scheduleAtFixedRate(timerTaskQPIGS, 6000, 10000);
-            //bdt.scheduleAtFixedRate(timerTaskQPIRI,6000,10000);
-            //bdt.scheduleAtFixedRate(timerTaskQPIWS, 6000, 10000);
+            bdt.scheduleAtFixedRate(timerTaskQPIGS, 0, 10000);
+            //bdt.scheduleAtFixedRate(timerTaskQPIRI,2000,10000);
+            //bdt.scheduleAtFixedRate(timerTaskQPIWS, 4000, 10000);
         } catch (SerialPortException e) {
             System.out.println(e.getExceptionType());
         }
@@ -85,7 +90,7 @@ public class Controller implements Initializable {
                 ArrayList<String> list = sqlGestion.getAllDate();
                 System.out.println(list);
                 ObservableList<String> ObList = FXCollections.observableList(list);
-                               choiceBoxDate.setItems(ObList);
+                choiceBoxDate.setItems(ObList);
 
             } catch (SQLException e) {
                 System.err.println(e.getMessage());

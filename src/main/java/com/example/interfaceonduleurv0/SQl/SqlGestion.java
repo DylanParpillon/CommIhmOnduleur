@@ -18,7 +18,7 @@ public class SqlGestion extends Controller {
     public SqlGestion() throws SQLException {
         sqlConn =  new SqlConn();
         connection  = sqlConn.getConnTestBdd();
-        requeteAll = connection.prepareStatement("SELECT * FROM calculs");
+        requeteAll = connection.prepareStatement("SELECT * FROM calculs order by date asc");
         requete1 = connection.prepareStatement("SELECT * FROM calculs ORDER BY id_calcul DESC LIMIT ?");
                 requete2 = connection.prepareStatement("SELECT * FROM calculs WHERE date <= ? and date >= ?");
                 requete3 = connection.prepareStatement("INSERT INTO calculs(id_calcul,energie,gain,date) VALUES(null,?,?,?)");

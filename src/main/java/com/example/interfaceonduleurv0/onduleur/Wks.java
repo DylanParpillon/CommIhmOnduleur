@@ -1,5 +1,6 @@
 package com.example.interfaceonduleurv0.onduleur;
 
+import com.example.interfaceonduleurv0.Controller;
 import com.example.interfaceonduleurv0.RPI.ModeleQPIGS;
 import com.example.interfaceonduleurv0.RPI.ModeleQPIRI;
 import com.example.interfaceonduleurv0.RPI.ModeleQPIWS;
@@ -13,9 +14,9 @@ import java.sql.SQLException;
 
 public class Wks extends LiaisonSerie {
     //truc
-
-    public Wks() throws SQLException {
-
+Controller ctrl ;
+    public Wks(Controller ctrl) throws SQLException {
+        this.ctrl = ctrl;
     }
 
     private final byte[] QPIGS = "QPIGS".getBytes(StandardCharsets.US_ASCII);
