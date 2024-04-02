@@ -86,7 +86,7 @@ public class DonneRecup {
     /**
      * Définit la quantité d'énergie en kilowatt.
      *
-     * @param kilowatt la quantité d'énergie en kilowatt à définir
+     * @param kilowatter la quantité d'énergie en kilowatt à définir
      */
     public void setKilowatter(double kilowatter) {
         this.kilowatter = kilowatter;
