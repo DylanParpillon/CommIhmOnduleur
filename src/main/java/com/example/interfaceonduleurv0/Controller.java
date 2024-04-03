@@ -159,6 +159,9 @@ public class Controller implements Initializable {
                     if (bddDistante.connection()) {
                         bddDistante.post(stockValeurEnvoie);
                         stockValeurEnvoie.clear();
+                        //mettre l'icone connexion
+                    }else{
+                        //mettre l'iconne des connecter
                     }
                 }
             } catch (SQLException e) {
