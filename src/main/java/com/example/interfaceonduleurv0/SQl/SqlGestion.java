@@ -20,7 +20,7 @@ public class SqlGestion {
     private Connection connection;
 
     /** Requêtes SQL préparées pour différentes opérations. */
-    private PreparedStatement requeteAll, requete1, requete2, requete3, updatePrix, mesureAcs, switchUtoD, requeteDates;
+    private PreparedStatement requeteAll, requete1, requete2, requete3, updatePrix, mesureAcs, switchUtoD, requeteDates , requeteAnnee , requeteMois , requeteHeure,requeteJour;
 
     /** Valeur d'énergie. */
     private double energie;
@@ -44,8 +44,33 @@ public class SqlGestion {
         mesureAcs = connection.prepareStatement("SELECT * FROM mesures");
         switchUtoD = connection.prepareStatement("UPDATE mesures SET Ss_AC = ?, date = ? WHERE id_mesure = ?");
         requeteDates = connection.prepareStatement("SELECT SUBSTR(date,0,5) AS annee FROM calculs GROUP BY annee ORDER BY annee DESC ");
+        requeteAnnee = connection.prepareStatement("SELECT SUM(gain) gainYears, substr(date,1,4) temps FROM calculs where temps = '2022'");
+        requeteMois = connection.prepareStatement("SELECT SUM(gain) gainMonth, substr(date,1,7) temps FROM calculs where temps = ?");
+        requeteJour = connection.prepareStatement("SELECT SUM(gain) gainDay, substr(date,1,10) temps FROM calculs where temps = ?");
+        requeteHeure = connection.prepareStatement("SELECT SUM(gain) gainHours, substr(date,1,13) temps FROM calculs where temps = ?");
     }
-
+    public String getOneYears() throws SQLException {
+        ResultSet rs = requeteAnnee.executeQuery();
+        return rs.getString("gainYears");
+    }
+    public String getlastMonth() throws SQLException {
+        String mois = sdf.format( new Timestamp(System.currentTimeMillis())).substring(0,7);
+        System.out.println(mois+ "mois");
+        requeteMois.setString(1,mois);
+        return requeteMois.executeQuery().getString("gainMonth");
+    }
+    public String getlastHours() throws SQLException {
+        String heure = sdf.format(new Timestamp(System.currentTimeMillis())).substring(0,13);
+        System.out.println(heure+ "heure");
+        requeteHeure.setString(1,heure);
+        return requeteHeure.executeQuery().getString("gainHours");
+    }
+    public String getlastDay() throws SQLException {
+        String day = sdf.format(new Timestamp(System.currentTimeMillis())).substring(0,10);
+        System.out.println(day+ "jour");
+        requeteJour.setString(1,day);
+        return requeteJour.executeQuery().getString("gainDay");
+    }
     /**
      * Récupère toutes les dates disponibles dans la base de données.
      *
@@ -145,7 +170,7 @@ public class SqlGestion {
      * @return la dernière valeur sous forme de Donnée récupérée
      * @throws SQLException si une erreur SQL se produit lors de l'exécution de la requête
      */
-    public ArrayList<DonneRecup> lastValue() throws SQLException {
+    public DonneRecup getLastValue() throws SQLException {
         requete1.setInt(1, 1);
         ResultSet rs = requete1.executeQuery();
         ArrayList<DonneRecup> lastValue = new ArrayList<>();
@@ -155,9 +180,8 @@ public class SqlGestion {
             dc.setDate(rs.getDate("date"));
             dc.setEuro(rs.getDouble("gain"));
             dc.setKilowatter(rs.getDouble("energie"));
-            lastValue.add(dc);
         }
-        return lastValue;
+        return dc;
     }
 
     /**

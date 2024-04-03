@@ -78,8 +78,8 @@
                    </VBox>
                    <VBox prefHeight="200.0" prefWidth="100.0" styleClass="grid-label" GridPane.columnIndex="1" GridPane.rowIndex="1">
                        <children>
-                           <Label prefHeight="35.0" prefWidth="195.0" styleClass="headerLabel" text="Gain (m)" />
-                           <Label fx:id="LabelGainM" prefHeight="157.0" prefWidth="323.0" text="Label" />
+                           <Label prefHeight="35.0" prefWidth="195.0" styleClass="headerLabel" text="Gain (M)" />
+                           <Label fx:id="labelGainM" prefHeight="157.0" prefWidth="323.0" text="Label" />
                        </children>
                    </VBox>
                    <VBox prefHeight="200.0" prefWidth="100.0" styleClass="grid-label" GridPane.columnIndex="1">

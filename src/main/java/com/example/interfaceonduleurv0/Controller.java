@@ -6,6 +6,7 @@ import com.example.interfaceonduleurv0.RPI.ModeleQPIRI;
 import com.example.interfaceonduleurv0.RPI.ModeleQPIWS;
 import com.example.interfaceonduleurv0.SQl.SqlGestion;
 import com.example.interfaceonduleurv0.onduleur.Wks;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.Initializable;
@@ -15,6 +16,7 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import jssc.SerialPortException;
+
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
@@ -49,7 +51,7 @@ public class Controller implements Initializable {
     public Label labelStatut;
     public Label labelGainI;
     public Label labelGainH;
-    public Label LabelGainM;
+    public Label labelGainM;
     public Label labelGainJ;
 
     /** Choix de la date. */
@@ -135,6 +137,7 @@ public class Controller implements Initializable {
         new Thread(()->{
             try {
                 SqlGestion sqlGestion = new SqlGestion();
+
                 ArrayList<String> list = sqlGestion.getAllDate();
                 System.out.println(list);
                 ObservableList<String> ObList = FXCollections.observableList(list);
@@ -156,12 +159,13 @@ public class Controller implements Initializable {
                     System.out.println("Puissance diff");
                     stockValeurEnvoie = sqlGestion.mesure(puissanceAc, new Timestamp(System.currentTimeMillis()));
                     System.out.println("Mesure effectuer");
+                    updateGainGraph(sqlGestion);
                     if (bddDistante.connection()) {
                         bddDistante.post(stockValeurEnvoie);
                         stockValeurEnvoie.clear();
                         //mettre l'icone connexion
                     }else{
-                        //mettre l'iconne des connecter
+                        //mettre l'icone de co
                     }
                 }
             } catch (SQLException e) {
@@ -172,7 +176,12 @@ public class Controller implements Initializable {
                 System.err.println(e + "erreur connection? ");
             }
         }).start();
-
-
+    }
+    public void updateGainGraph(SqlGestion sqlGestion){
+        // sqlGestion.getOneYears();
+        Platform.runLater(()->{try {labelGainM.setText(sqlGestion.getlastMonth());} catch (SQLException ignored) {}});
+        Platform.runLater(()->{try {labelGainJ.setText(sqlGestion.getlastDay());} catch (SQLException ignored) {}});
+        Platform.runLater(()->{try {labelGainH.setText(sqlGestion.getlastHours());} catch (SQLException ignored) {}});
+        Platform.runLater(()->{try {labelGainH.setText(String.valueOf(sqlGestion.getLastValue().getEuro()));} catch (SQLException ignored) {}});
     }
 }
