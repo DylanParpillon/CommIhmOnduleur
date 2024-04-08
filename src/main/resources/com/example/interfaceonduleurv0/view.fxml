@@ -106,8 +106,8 @@
          </children></HBox>
       <AnchorPane prefHeight="38.0" prefWidth="878.0">
          <children>
-            <Button layoutX="14.0" layoutY="2.0" mnemonicParsing="false" text="Server" />
-            <Button layoutX="138.0" layoutY="2.0" mnemonicParsing="false" text="Parametre" />
+            <Button fx:id="buttonServer" layoutX="14.0" layoutY="2.0" mnemonicParsing="false" text="Server" />
+            <Button fx:id="ButtonSetting" layoutX="138.0" layoutY="2.0" mnemonicParsing="false" text="Parametre" />
          </children>
       </AnchorPane>
    </children>

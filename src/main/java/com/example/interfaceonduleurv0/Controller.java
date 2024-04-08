@@ -58,6 +58,8 @@ public class Controller implements Initializable {
 
     /** Graphique de ligne. */
     public LineChart chartId;
+    public Button buttonServer;
+    public Button ButtonSetting;
 
     /** Timer pour les tâches périodiques. */
     Timer bdt = new Timer();
