@@ -154,9 +154,10 @@ public class Controller implements Initializable {
                     stockValeurEnvoie = sqlGestion.mesure(puissanceAc, new Timestamp(System.currentTimeMillis()));
                     System.out.println("Mesure effectuer");
                     updateGainGraph(sqlGestion);
-                        bddDistante.post(stockValeurEnvoie);
-                        System.out.println("envoyer");
-                        stockValeurEnvoie.clear();
+                    bddDistante.post(stockValeurEnvoie);
+                    System.out.println("envoyer");
+                    stockValeurEnvoie.clear();
+                    dataQPIGS.clear();
                         //mettre l'icone connexion
 
                         //mettre l'icone de co
