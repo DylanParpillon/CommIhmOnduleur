@@ -42,29 +42,31 @@ Controller ctrl ;
         System.out.println("Qpigs = " + dcp.length);
 
 
-//        System.out.println("Methode QPIGS");
-//        System.out.println(st_trameBrute);
-//     System.out.println("""
-//                %s V = TensionDuReseau 0
-//                %s Hz = FrequenceDuReseau 1
-//                %s V = TensionDeSortie_AC 2
-//                %s Hz = FrequenceDeSortie_AC 3
-//                %s VA = PuissanceApparenteDeSortie_AC 4
-//                %s W = PuissanceActiveDeSortie_AC 5
-//                %s A = CourantEntreePv
-//                %s V = TensionBUS 7
-//                %s V = TensionBatterie 8
-//                %s A = CourantRechargeBatterie 9
-//                %s /100 = PourcentageChargeSortie 6
-//                %s �C = TemperatureDuRadiateurOnduleur 10
-//                %s V = TensionEntreePv 12
-//                %s V = TentionBatterie 13
-//                %s A = CourantDechargeBatterie 14
-//                %s = StatusMateriel1 15 (
-//                %s mV = TensionVentilateurs_10mv 16
-//                %s = VersionEEPROM 17
-//                %s W = PuissanceChargePv 18
-//                """.formatted(dcp[0].replace('(', ' '), dcp[1], dcp[2], dcp[3], dcp[4], dcp[5], dcp[6], dcp[7], dcp[8], dcp[9], dcp[10], dcp[11], dcp[12], dcp[13], dcp[14], dcp[15], dcp[16], dcp[17], dcp[18], dcp[19]));
+        System.out.println("Methode QPIGS");
+
+
+        System.out.println(st_trameBrute);
+     System.out.println("""
+                %s V = TensionDuReseau 0
+                %s Hz = FrequenceDuReseau 1
+                %s V = TensionDeSortie_AC 2
+                %s Hz = FrequenceDeSortie_AC 3
+                %s VA = PuissanceApparenteDeSortie_AC 4
+                %s W = PuissanceActiveDeSortie_AC 5
+                %s A = CourantEntreePv
+                %s V = TensionBUS 7
+                %s V = TensionBatterie 8
+                %s A = CourantRechargeBatterie 9
+                %s /100 = PourcentageChargeSortie 6
+                %s �C = TemperatureDuRadiateurOnduleur 10
+                %s V = TensionEntreePv 12
+                %s V = TentionBatterie 13
+                %s A = CourantDechargeBatterie 14
+                %s = StatusMateriel1 15 (
+                %s mV = TensionVentilateurs_10mv 16
+                %s = VersionEEPROM 17
+                %s W = PuissanceChargePv 18
+                """.formatted(dcp[0].replace('(', ' '), dcp[1], dcp[2], dcp[3], dcp[4], dcp[5], dcp[6], dcp[7], dcp[8], dcp[9], dcp[10], dcp[11], dcp[12], dcp[13], dcp[14], dcp[15], dcp[16], dcp[17], dcp[18], dcp[19]));
 
         qpigs.setTensionDuReseau(dcp[3]);
         qpigs.setFrequenceDuReseau(dcp[1]);
