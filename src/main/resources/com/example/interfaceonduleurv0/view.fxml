@@ -26,25 +26,25 @@
                    <VBox prefHeight="200.0" prefWidth="100.0" styleClass="grid-label">
                        <children>
                            <Label prefHeight="35.0" prefWidth="195.0" styleClass="headerLabel" text="PuissPhotoEntrer(W)" />
-                           <Label fx:id="labelPhotoEntrer" prefHeight="157.0" prefWidth="323.0" text="Label" />
+                           <Label fx:id="labelPhotoEntrer" prefHeight="157.0" prefWidth="323.0" text="Chargement...." />
                        </children>
                    </VBox>
                    <VBox prefHeight="200.0" prefWidth="100.0" styleClass="grid-label" GridPane.rowIndex="1">
                        <children>
                            <Label prefHeight="35.0" prefWidth="195.0" styleClass="headerLabel" text="Batterie(%)" />
-                           <Label fx:id="labelBatterie" prefHeight="157.0" prefWidth="323.0" text="Label" />
+                           <Label fx:id="labelBatterie" prefHeight="157.0" prefWidth="323.0" text="Chargement...." />
                        </children>
                    </VBox>
                    <VBox prefHeight="200.0" prefWidth="100.0" styleClass="grid-label" GridPane.columnIndex="1" GridPane.rowIndex="1">
                        <children>
                            <Label prefHeight="35.0" prefWidth="195.0" styleClass="headerLabel" text="Puissance Sortie (W)" />
-                           <Label fx:id="labelPSortie" prefHeight="157.0" prefWidth="323.0" text="Label" />
+                           <Label fx:id="labelPSortie" prefHeight="157.0" prefWidth="323.0" text="Chargement...." />
                        </children>
                    </VBox>
                    <VBox prefHeight="200.0" prefWidth="100.0" styleClass="grid-label" GridPane.columnIndex="1">
                        <children>
                            <Label prefHeight="35.0" prefWidth="195.0" styleClass="headerLabel" text="Tension Sortie (V)" />
-                           <Label fx:id="labelTensionSortie" prefHeight="157.0" prefWidth="323.0" text="Label" />
+                           <Label fx:id="labelTensionSortie" prefHeight="157.0" prefWidth="323.0" text="Chargement...." />
                        </children>
                    </VBox>
                </children>
@@ -67,25 +67,25 @@
                    <VBox prefHeight="200.0" prefWidth="100.0" styleClass="grid-label">
                        <children>
                            <Label prefHeight="35.0" prefWidth="195.0" styleClass="headerLabel" text="Gain Instant" />
-                           <Label fx:id="labelGainI" prefHeight="157.0" prefWidth="323.0" text="Label" />
+                           <Label fx:id="labelGainI" prefHeight="157.0" prefWidth="323.0" text="Chargement...." />
                        </children>
                    </VBox>
                    <VBox prefHeight="200.0" prefWidth="100.0" styleClass="grid-label" GridPane.rowIndex="1">
                        <children>
                            <Label prefHeight="35.0" prefWidth="195.0" styleClass="headerLabel" text="Gain (H)" />
-                           <Label fx:id="labelGainH" prefHeight="157.0" prefWidth="323.0" text="Label" />
+                           <Label fx:id="labelGainH" prefHeight="157.0" prefWidth="323.0" text="Chargement...." />
                        </children>
                    </VBox>
                    <VBox prefHeight="200.0" prefWidth="100.0" styleClass="grid-label" GridPane.columnIndex="1" GridPane.rowIndex="1">
                        <children>
                            <Label prefHeight="35.0" prefWidth="195.0" styleClass="headerLabel" text="Gain (M)" />
-                           <Label fx:id="labelGainM" prefHeight="157.0" prefWidth="323.0" text="Label" />
+                           <Label fx:id="labelGainM" prefHeight="157.0" prefWidth="323.0" text="Chargement...." />
                        </children>
                    </VBox>
                    <VBox prefHeight="200.0" prefWidth="100.0" styleClass="grid-label" GridPane.columnIndex="1">
                    <children>
                        <Label prefHeight="35.0" prefWidth="195.0" styleClass="headerLabel" text="Gain (J)" />
-                       <Label fx:id="labelGainJ" prefHeight="157.0" prefWidth="323.0" text="Label" />
+                       <Label fx:id="labelGainJ" prefHeight="157.0" prefWidth="323.0" text="Chargement...." />
                    </children>
                    </VBox>
                </children>

@@ -77,9 +77,9 @@ public class DonneRecup {
     /**
      * Renvoie la quantité d'énergie en kilowatt.
      *
-     * @return la quantité d'énergie en kilowatt
+     * @return la quantité d'énergie en kilowatter
      */
-    public double getKilowatt() {
+    public double getKilowatter() {
         return kilowatter;
     }
 

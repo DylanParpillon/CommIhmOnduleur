@@ -17,7 +17,6 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import jssc.SerialPortException;
 
-import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -124,29 +123,22 @@ public class Controller implements Initializable {
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
         // new Thread(() -> {launchData();}).start();
         try {
-            wks.initCom("COM3");
+            SqlGestion sqlGestion = new SqlGestion();
+            ObservableList<String> ObList = FXCollections.observableList(sqlGestion.getAllDate());
+            choiceBoxDate.setItems(ObList);
+            wks.initCom("COM7");
             wks.configurerParametres(2400, 8, 0, 1);
             bdt.scheduleAtFixedRate(timerTaskQPIGS, 0, 10000);
             //bdt.scheduleAtFixedRate(timerTaskQPIRI,2000,10000);
             //bdt.scheduleAtFixedRate(timerTaskQPIWS, 4000, 10000);
         } catch (SerialPortException e) {
-            System.out.println(e.getExceptionType());
+            System.err.println(e + " serialport");
+        } catch (SQLException e) {
+            System.err.println(e + " sql erreur");
         }
-        new Thread(()->{
-            try {
-                SqlGestion sqlGestion = new SqlGestion();
-
-                ArrayList<String> list = sqlGestion.getAllDate();
-                System.out.println(list);
-                ObservableList<String> ObList = FXCollections.observableList(list);
-                choiceBoxDate.setItems(ObList);
-
-            } catch (SQLException e) {
-                System.err.println(e.getMessage());
-            }
-        }).start();
         //mesure
         new Thread(()->{
             try {
@@ -160,20 +152,18 @@ public class Controller implements Initializable {
                     stockValeurEnvoie = sqlGestion.mesure(puissanceAc, new Timestamp(System.currentTimeMillis()));
                     System.out.println("Mesure effectuer");
                     updateGainGraph(sqlGestion);
-                    if (bddDistante.connection()) {
                         bddDistante.post(stockValeurEnvoie);
+                        System.out.println("envoyer");
                         stockValeurEnvoie.clear();
                         //mettre l'icone connexion
-                    }else{
+
                         //mettre l'icone de co
-                    }
+
                 }
             } catch (SQLException e) {
                 System.err.println(e + "erreur Sql");
             } catch (InterruptedException e) {
                 System.err.println(e + " interrupted Excpt");
-            } catch (IOException e) {
-                System.err.println(e + "erreur connection? ");
             }
         }).start();
     }

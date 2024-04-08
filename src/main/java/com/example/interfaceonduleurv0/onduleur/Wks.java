@@ -4,6 +4,7 @@ import com.example.interfaceonduleurv0.Controller;
 import com.example.interfaceonduleurv0.RPI.ModeleQPIGS;
 import com.example.interfaceonduleurv0.RPI.ModeleQPIRI;
 import com.example.interfaceonduleurv0.RPI.ModeleQPIWS;
+import javafx.application.Platform;
 import jssc.SerialPortEvent;
 import jssc.SerialPortException;
 import org.apache.commons.lang3.ArrayUtils;
@@ -41,30 +42,29 @@ Controller ctrl ;
         System.out.println("Qpigs = " + dcp.length);
 
 
-        System.out.println("Methode QPIGS");
-        System.out.println(st_trameBrute);
-
-        System.out.println("""
-                %s V = TensionDuReseau 0
-                %s Hz = FrequenceDuReseau 1
-                %s V = TensionDeSortie_AC 2
-                %s Hz = FrequenceDeSortie_AC 3
-                %s VA = PuissanceApparenteDeSortie_AC 4
-                %s W = PuissanceActiveDeSortie_AC 5
-                %s A = CourantEntreePv
-                %s V = TensionBUS 7
-                %s V = TensionBatterie 8
-                %s A = CourantRechargeBatterie 9
-                %s /100 = PourcentageChargeSortie 6
-                %s �C = TemperatureDuRadiateurOnduleur 10
-                %s V = TensionEntreePv 12
-                %s V = TentionBatterie 13
-                %s A = CourantDechargeBatterie 14
-                %s = StatusMateriel1 15 (
-                %s mV = TensionVentilateurs_10mv 16
-                %s = VersionEEPROM 17
-                %s W = PuissanceChargePv 18
-                """.formatted(dcp[0].replace('(', ' '), dcp[1], dcp[2], dcp[3], dcp[4], dcp[5], dcp[6], dcp[7], dcp[8], dcp[9], dcp[10], dcp[11], dcp[12], dcp[13], dcp[14], dcp[15], dcp[16], dcp[17], dcp[18], dcp[19]));
+//        System.out.println("Methode QPIGS");
+//        System.out.println(st_trameBrute);
+//     System.out.println("""
+//                %s V = TensionDuReseau 0
+//                %s Hz = FrequenceDuReseau 1
+//                %s V = TensionDeSortie_AC 2
+//                %s Hz = FrequenceDeSortie_AC 3
+//                %s VA = PuissanceApparenteDeSortie_AC 4
+//                %s W = PuissanceActiveDeSortie_AC 5
+//                %s A = CourantEntreePv
+//                %s V = TensionBUS 7
+//                %s V = TensionBatterie 8
+//                %s A = CourantRechargeBatterie 9
+//                %s /100 = PourcentageChargeSortie 6
+//                %s �C = TemperatureDuRadiateurOnduleur 10
+//                %s V = TensionEntreePv 12
+//                %s V = TentionBatterie 13
+//                %s A = CourantDechargeBatterie 14
+//                %s = StatusMateriel1 15 (
+//                %s mV = TensionVentilateurs_10mv 16
+//                %s = VersionEEPROM 17
+//                %s W = PuissanceChargePv 18
+//                """.formatted(dcp[0].replace('(', ' '), dcp[1], dcp[2], dcp[3], dcp[4], dcp[5], dcp[6], dcp[7], dcp[8], dcp[9], dcp[10], dcp[11], dcp[12], dcp[13], dcp[14], dcp[15], dcp[16], dcp[17], dcp[18], dcp[19]));
 
         qpigs.setTensionDuReseau(dcp[3]);
         qpigs.setFrequenceDuReseau(dcp[1]);
@@ -87,9 +87,15 @@ Controller ctrl ;
         qpigs.setVersionEEPROM(dcp[19]);
         qpigs.setPuissanceChargePv(dcp[19]);
         ctrl.dataQPIGS.add(qpigs);
-        ctrl.labelBatterie.setText(qpigs.getPourcentageCapaciteBatterie());
-        ctrl.labelTensionSortie.setText(qpigs.getTensionDeSortie_AC());
-        ctrl.labelBatterie.setText(qpigs.getPuissanceActiveDeSortie_AC());
+        Platform.runLater(()->{
+            ctrl.labelBatterie.setText(qpigs.getPourcentageCapaciteBatterie());
+        });
+        Platform.runLater(()->{
+            ctrl.labelTensionSortie.setText(qpigs.getTensionDeSortie_AC());
+        });
+        Platform.runLater(()->{
+            ctrl.labelPSortie.setText(qpigs.getPuissanceActiveDeSortie_AC());
+        });
         return qpigs;
     }
     public ModeleQPIRI qpiriModel() {
@@ -100,28 +106,28 @@ Controller ctrl ;
             dcp = st_trameBrute.split(" ");
             System.out.println("Qpiri = " + dcp.length);
 //
-            System.out.println("Methode QPIRI");
-            System.out.println(st_trameBrute);
-            System.out.println("""
-                            %s V = tension nominale du r�seau
-                            %s A = courant nominale du r�seau
-                            %s V = TensionNominaleDeSortie_AC
-                            %s Hz = FrequenceNominaleDeSortie_AC
-                            %s A = CourantNominalDeSortie_AC
-                            %s VA = PuissanceApparenteDeSortie_AC
-                            %s W = PuissanceActiveDeSortie_AC
-                            %s V =TensionNominaleBatterie
-                            %s V = TensionRechargeBatterie
-                            %s V = TensionBasseBatterie
-                            %s V = TensionMasseBatterie
-                            %s V = TensionEntretienBatterie
-                            %s = TypeBatterie
-                            %s A = CourantDeCharge_AC_max
-                            %s A = CourantDeCharge_max
-                            %s = PlageDeTensionEntree
-                            %s = PrioriteSourceDeSortie
-                            %S = PrioriteSourceDuChargeur
-                            """.formatted(dcp[0].replace('(', ' '), dcp[1], dcp[2], dcp[3], dcp[4], dcp[5], dcp[6], dcp[7], dcp[8], dcp[9], dcp[10], dcp[11], dcp[12], dcp[13], dcp[14], dcp[15], dcp[16], dcp[17]));
+//            System.out.println("Methode QPIRI");
+//            System.out.println(st_trameBrute);
+//            System.out.println("""
+//                            %s V = tension nominale du r�sleau
+//                            %s A = courant nominale du r�seau
+//                            %s V = TensionNominaleDeSortie_AC
+//                            %s Hz = FrequenceNominaleDeSortie_AC
+//                            %s A = CourantNominalDeSortie_AC
+//                            %s VA = PuissanceApparenteDeSortie_AC
+//                            %s W = PuissanceActiveDeSortie_AC
+//                            %s V =TensionNominaleBatterie
+//                            %s V = TensionRechargeBatterie
+//                            %s V = TensionBasseBatterie
+//                            %s V = TensionMasseBatterie
+//                            %s V = TensionEntretienBatterie
+//                            %s = TypeBatterie
+//                            %s A = CourantDeCharge_AC_max
+//                            %s A = CourantDeCharge_max
+//                            %s = PlageDeTensionEntree
+//                            %s = PrioriteSourceDeSortie
+//                            %S = PrioriteSourceDuChargeur
+//                            """.formatted(dcp[0].replace('(', ' '), dcp[1], dcp[2], dcp[3], dcp[4], dcp[5], dcp[6], dcp[7], dcp[8], dcp[9], dcp[10], dcp[11], dcp[12], dcp[13], dcp[14], dcp[15], dcp[16], dcp[17]));
 
             qpiri.setTensionNominaleDuReseau(dcp[0]);
             qpiri.setCourantNominalDuReseau(dcp[1]);

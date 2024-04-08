@@ -2,7 +2,7 @@ package com.example.interfaceonduleurv0.Distant;
 
 import com.example.interfaceonduleurv0.DonneRecup;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.io.IOException;
+
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -20,9 +20,6 @@ public class BddDistante {
     /** Adresse du service distant pour l'insertion des gains. */
     private String addressEarning = "http://10.0.0.172:8080/insertearning";
 
-    /** Connexion HTTP. */
-    HttpURLConnection connection;
-
     /**
      * Constructeur de la classe BddDistante.
      *
@@ -31,28 +28,15 @@ public class BddDistante {
     public BddDistante(String address) {
         //this.address = address;
     }
-
-    /**
-     * Établit une connexion avec le service distant.
-     *
-     * @return true si la connexion est établie avec succès, false sinon
-     * @throws IOException si une erreur d'entrée/sortie se produit lors de l'établissement de la connexion
-     */
-    public boolean connection() throws IOException {
-        URL url = new URL(addressEarning);
-        connection = (HttpURLConnection) url.openConnection();
-        boolean connected = (connection.getResponseCode() == 200);
-        return connected;
-    }
-
     /**
      * Envoie les données spécifiées à la base de données distante.
      *
      * @param values les valeurs à envoyer à la base de données
-     * @return une chaîne de caractères représentant la réponse du serveur
      */
-    public String post(ArrayList<DonneRecup> values) {
+    public void post(ArrayList<DonneRecup> values) {
         try {
+            URL url = new URL(addressEarning);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             // Paramètres de la requête HTTP POST
             connection.setRequestMethod("POST");
             connection.setRequestProperty("Content-Type", "application/json");
@@ -68,7 +52,6 @@ public class BddDistante {
                     os.flush();
                 }
             }
-
             // Récupération et traitement de la réponse du serveur
             int responseCode = connection.getResponseCode();
             if (responseCode == 200) {
@@ -81,6 +64,5 @@ public class BddDistante {
             System.err.println(e.getMessage());
         }
 
-        return null;
     }
 }
