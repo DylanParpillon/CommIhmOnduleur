@@ -1,6 +1,8 @@
-package com.example.interfaceonduleurv0;
+package com.example.interfaceonduleurv0.controller;
 
 import com.example.interfaceonduleurv0.Distant.BddDistante;
+import com.example.interfaceonduleurv0.Ihm;
+import com.example.interfaceonduleurv0.RPI.ModeleData;
 import com.example.interfaceonduleurv0.RPI.ModeleQPIGS;
 import com.example.interfaceonduleurv0.RPI.ModeleQPIRI;
 import com.example.interfaceonduleurv0.RPI.ModeleQPIWS;
@@ -16,7 +18,6 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import jssc.SerialPortException;
-
 import java.net.URL;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -31,7 +32,11 @@ import java.util.TimerTask;
  * afficher et enregistrer les données.
  * Elle implémente l'interface Initializable de JavaFX pour initialiser les composants de l'interface.
  */
-public class Controller implements Initializable {
+public class RootController implements Initializable {
+    Ihm ihm;
+    public void setMainApp(Ihm ihm){
+        this.ihm = ihm;
+    }
 
     /** Référence à la base de données distante. */
     public BddDistante bddDistante = new BddDistante("ws://10.0.0.172:8080/insertearnings");
@@ -77,7 +82,7 @@ public class Controller implements Initializable {
     String saveTest;
 
     /** Liste pour stocker les valeurs à envoyer. */
-    ArrayList<DonneRecup> stockValeurEnvoie = new ArrayList<>();
+    ArrayList<ModeleData> stockValeurEnvoie = new ArrayList<>();
 
     /** Instance de la classe Wks pour la communication avec le matériel. */
     Wks wks = new Wks(this);
@@ -114,11 +119,11 @@ public class Controller implements Initializable {
      *
      * @throws SQLException si une erreur SQL se produit
      */
-    public Controller() throws SQLException {
+    public RootController() throws SQLException {
     }
 
     /**
-     * Méthode d'initialisation de la classe Controller.
+     * Méthode d'initialisation de la classe RootController.
      *
      * @param location  URL de localisation (non utilisé dans cette implémentation)
      * @param resources ResourceBundle (non utilisé dans cette implémentation)
@@ -126,6 +131,13 @@ public class Controller implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
+
+        ButtonSetting.setOnAction((e)->{
+            ihm.configView();
+                });
+        buttonServer.setOnAction((e)->{
+            ihm.wifiView();
+        });
         // new Thread(() -> {launchData();}).start();
         try {
             SqlGestion sqlGestion = new SqlGestion();
@@ -177,4 +189,6 @@ public class Controller implements Initializable {
         Platform.runLater(()->{try {labelGainH.setText(sqlGestion.getlastHours());} catch (SQLException ignored) {}});
         Platform.runLater(()->{try {labelGainH.setText(String.valueOf(sqlGestion.getLastValue().getEuro()));} catch (SQLException ignored) {}});
     }
+
+
 }

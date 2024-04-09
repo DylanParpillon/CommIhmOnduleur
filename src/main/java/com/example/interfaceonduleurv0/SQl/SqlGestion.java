@@ -1,6 +1,6 @@
 package com.example.interfaceonduleurv0.SQl;
 
-import com.example.interfaceonduleurv0.DonneRecup;
+import com.example.interfaceonduleurv0.RPI.ModeleData;
 
 import java.sql.*;
 import java.text.SimpleDateFormat;
@@ -126,8 +126,8 @@ public class SqlGestion {
      * @return une liste de Données récupérées
      * @throws SQLException si une erreur SQL se produit lors de l'exécution des requêtes
      */
-    public ArrayList<DonneRecup> mesure(ArrayList<String> newACs, Timestamp timestamp) throws SQLException {
-        ArrayList<DonneRecup> dr = new ArrayList<>();
+    public ArrayList<ModeleData> mesure(ArrayList<String> newACs, Timestamp timestamp) throws SQLException {
+        ArrayList<ModeleData> dr = new ArrayList<>();
         int i = 1;
         for (String newAC : newACs) {
             double newAcValue = Double.parseDouble(newAC);
@@ -144,8 +144,8 @@ public class SqlGestion {
             double delta = Math.abs((saveDate.get(1).getTime() - saveDate.get(0).getTime()));
             if (delta != 0) energie = (saveAC.get(0) / delta);
             else energie = 0;
-            DonneRecup donneRecup = stockValeur(sdf.format(timestamp));
-            dr.add(donneRecup);
+            ModeleData modeleData = stockValeur(sdf.format(timestamp));
+            dr.add(modeleData);
             switchUtoDM(newAcValue, sdf.format(timestamp), 2);
         }
         return dr;
@@ -183,9 +183,9 @@ public class SqlGestion {
      * @return une liste de Données récupérées
      * @throws SQLException si une erreur SQL se produit lors de l'exécution de la requête
      */
-    public ArrayList<DonneRecup> getAllValue() throws SQLException {
-        ArrayList<DonneRecup> tblvalue = new ArrayList<>();
-        DonneRecup dc = new DonneRecup();
+    public ArrayList<ModeleData> getAllValue() throws SQLException {
+        ArrayList<ModeleData> tblvalue = new ArrayList<>();
+        ModeleData dc = new ModeleData();
         ResultSet rs = requeteAll.executeQuery();
         while (rs.next()) {
             dc.setDate(rs.getDate("date"));
@@ -202,11 +202,11 @@ public class SqlGestion {
      * @return la dernière valeur sous forme de Donnée récupérée
      * @throws SQLException si une erreur SQL se produit lors de l'exécution de la requête
      */
-    public DonneRecup getLastValue() throws SQLException {
+    public ModeleData getLastValue() throws SQLException {
         requete1.setInt(1, 1);
         ResultSet rs = requete1.executeQuery();
-        ArrayList<DonneRecup> lastValue = new ArrayList<>();
-        DonneRecup dc = new DonneRecup();
+        ArrayList<ModeleData> lastValue = new ArrayList<>();
+        ModeleData dc = new ModeleData();
         while (rs.next()) {
             dc.setMacAddress("00:00:00:00");
             dc.setDate(rs.getDate("date"));
@@ -224,8 +224,8 @@ public class SqlGestion {
      * @return les données récupérées
      * @throws SQLException si une erreur SQL se produit lors de l'exécution de la requête
      */
-    private DonneRecup stockValeur(String ts) throws SQLException {
-        DonneRecup dr = new DonneRecup();
+    private ModeleData stockValeur(String ts) throws SQLException {
+        ModeleData dr = new ModeleData();
         ResultSet rs = connection.prepareStatement("SELECT * FROM prix").executeQuery();
         double gain = rs.getDouble("prix") * energie;
         requete4.setDouble(1, energie);

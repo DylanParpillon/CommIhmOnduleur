@@ -1,0 +1,1 @@
+sudo -E java Dglass.platform=gtk -Dfile.encoding=UTF-8 -Dcom.sun.javafx.touch=true -Dcom.sun.javafx.isEmbedded=true -Dcom.sun.javafx.virtualKeyboard=javafx -jar /home/pi/IdeaProjects/onduleur_fxml_no_lora/build/libs/onduleur_fxml_no_lora-1.0-SNAPSHOT-all.jar

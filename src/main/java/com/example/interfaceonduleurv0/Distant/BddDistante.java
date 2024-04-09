@@ -1,6 +1,6 @@
 package com.example.interfaceonduleurv0.Distant;
 
-import com.example.interfaceonduleurv0.DonneRecup;
+import com.example.interfaceonduleurv0.RPI.ModeleData;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.OutputStream;
@@ -33,7 +33,7 @@ public class BddDistante {
      *
      * @param values les valeurs à envoyer à la base de données
      */
-    public void post(ArrayList<DonneRecup> values) {
+    public void post(ArrayList<ModeleData> values) {
         try {
             URL url = new URL(addressEarning);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -44,7 +44,7 @@ public class BddDistante {
 
             // Conversion des données en format JSON et envoi
             ObjectMapper objectMapper = new ObjectMapper();
-            for (DonneRecup b : values) {
+            for (ModeleData b : values) {
                 String jsonData = objectMapper.writeValueAsString(b);
                 byte[] input = jsonData.getBytes(StandardCharsets.UTF_8);
                 try (OutputStream os = connection.getOutputStream()) {

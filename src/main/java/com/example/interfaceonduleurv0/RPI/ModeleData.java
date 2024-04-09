@@ -1,11 +1,11 @@
-package com.example.interfaceonduleurv0;
+package com.example.interfaceonduleurv0.RPI;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
  * Cette classe représente les données récupérées.
  */
-public class DonneRecup {
+public class ModeleData {
 
     /** Adresse MAC associée aux données. */
     private String macAddress;
