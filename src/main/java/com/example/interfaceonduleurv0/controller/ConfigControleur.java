@@ -30,6 +30,9 @@ public class ConfigControleur implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         try {
+            bt_annuler.setOnAction(this::ev_bt_annuler);
+            bt_valider.setOnAction(this::ev_bt_valider);
+            System.out.println("derrier event");
             fichier = new File("./config.bin");
             ObjectInputStream ois = new ObjectInputStream(new FileInputStream(fichier));
             ModeleConfiguration m = (ModeleConfiguration) ois.readObject();
@@ -37,7 +40,6 @@ public class ConfigControleur implements Initializable {
             tf_latitude.setText(m.getLatitude());
             tf_longitude.setText(m.getLongitude());
             tf_serveur.setText(m.getIpServeur());
-            ev_bt_valider((ActionEvent) bt_valider.getOnAction());
         } catch (IOException | ClassNotFoundException e) {
             System.out.println(e.getMessage());
         }
@@ -69,7 +71,6 @@ public class ConfigControleur implements Initializable {
             }
         } catch (IOException e) {
         }
-
     }
 
     public void ev_bt_annuler(ActionEvent actionEvent) {
@@ -81,7 +82,6 @@ public class ConfigControleur implements Initializable {
         //String homeDir = System.getenv("HOME");
         //String[] cmd = {homeDir + "/IdeaProjects/onduleur_fxml_no_lora/build/libs/determineMacWifi.sh"};
         String[] cmd = {"./determineMacEth.sh"};
-
         try {
             Process p = Runtime.getRuntime().exec(cmd);
             BufferedReader reponse = new BufferedReader(new InputStreamReader(p.getInputStream()));
@@ -96,7 +96,6 @@ public class ConfigControleur implements Initializable {
             System.out.println(e.getMessage());
         }
         return mac.toLowerCase();
-
     }
 
 

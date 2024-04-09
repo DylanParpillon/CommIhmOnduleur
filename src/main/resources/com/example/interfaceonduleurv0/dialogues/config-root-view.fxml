@@ -8,7 +8,7 @@
       <TextField fx:id="tf_latitude" layoutX="75.0" layoutY="41.0" />
       <TextField fx:id="tf_serveur" layoutX="75.0" layoutY="99.0" />
       <TextField fx:id="tf_longitude" layoutX="351.0" layoutY="41.0" />
-      <TextField fx:id="tf_mac" layoutX="351.0" layoutY="99.0" />
+      <TextField fx:id="tf_mac" disable="true" layoutX="351.0" layoutY="99.0" />
       <Button fx:id="bt_valider" layoutX="389.0" layoutY="184.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="73.0" text="Valider" />
       <Button fx:id="bt_annuler" layoutX="500.0" layoutY="184.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="64.0" text="Annuler" />
       <Label layoutX="14.0" layoutY="45.0" text="Longitude" />

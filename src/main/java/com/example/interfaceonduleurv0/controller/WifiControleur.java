@@ -6,6 +6,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -31,11 +32,21 @@ public class WifiControleur implements Initializable {
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
-    wifiStage.close();
+    bt_valider.setOnAction(((event -> {
+        try {
+            ev_button_valider(event);
+        } catch (IOException e) {
+            System.err.println(e.getMessage());
         }
-        public void ev_button_valider(ActionEvent actionEvent){
+    })));
 
+        }
+        public void ev_button_valider(ActionEvent actionEvent) throws IOException {
+        if(!tf_ssid.getText().isEmpty() & !tf_mdp.getText().isEmpty()){
+            String[] cmd = {"./determineMacEth.sh"};
+            Process p = Runtime.getRuntime().exec(cmd);
+            wifiStage.close();
+        }
 
         }
 }
