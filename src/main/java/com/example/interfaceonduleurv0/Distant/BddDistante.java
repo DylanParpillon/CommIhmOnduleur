@@ -1,6 +1,6 @@
 package com.example.interfaceonduleurv0.Distant;
 
-import com.example.interfaceonduleurv0.RPI.ModeleData;
+import com.example.interfaceonduleurv0.modeles.ModeleData;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.OutputStream;
@@ -33,7 +33,7 @@ public class BddDistante {
      *
      * @param values les valeurs à envoyer à la base de données
      */
-    public void post(ArrayList<ModeleData> values) {
+    public boolean post(ArrayList<ModeleData> values) {
         try {
             URL url = new URL(addressEarning);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -41,7 +41,6 @@ public class BddDistante {
             connection.setRequestMethod("POST");
             connection.setRequestProperty("Content-Type", "application/json");
             connection.setDoOutput(true);
-
             // Conversion des données en format JSON et envoi
             ObjectMapper objectMapper = new ObjectMapper();
             for (ModeleData b : values) {
@@ -56,13 +55,13 @@ public class BddDistante {
             int responseCode = connection.getResponseCode();
             if (responseCode == 200) {
                 System.out.println("Les données ont été envoyées avec succès !");
+                connection.disconnect();
+                return true;
             }
-
-            // Fermeture de la connexion
             connection.disconnect();
         } catch (Exception e) {
             System.err.println(e.getMessage());
         }
-
+        return false;
     }
 }

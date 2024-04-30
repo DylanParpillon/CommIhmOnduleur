@@ -1,4 +1,4 @@
-package com.example.interfaceonduleurv0.RPI;
+package com.example.interfaceonduleurv0.modeles;
 
 public class ModeleQPIWS {
     private String reserved, reserve_Surcharge, reserveDeclassementBatterie;

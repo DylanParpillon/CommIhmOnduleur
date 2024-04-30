@@ -36,7 +36,7 @@ GridPane {
     -fx-background-color: rgba(206, 206, 206, 0.7);
 }
 #mainLayout {
-    -fx-background-image: url('https://cdn1.regie-agricole.com/ulf/CMS_Content/1/articles/859060/_panneaux-photovoltaiques-1000x562.jpg');
+    -fx-background-image: url('../image/bg_panneaux-photovoltaiques.jpg');
     -fx-background-size: cover;
     -fx-background-position: center;
     -fx-background-repeat: no-repeat;

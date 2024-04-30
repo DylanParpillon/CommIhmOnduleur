@@ -1,4 +1,4 @@
-package com.example.interfaceonduleurv0.RPI;
+package com.example.interfaceonduleurv0.modeles;
 
 public class ModeleQPIGS {
     private String tensionDuReseau, frequenceDuReseau;

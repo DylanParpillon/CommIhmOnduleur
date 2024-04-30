@@ -1,15 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.net.*?>
 <?import javafx.scene.*?>
 <?import javafx.scene.chart.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox fx:id="mainLayout" alignment="BOTTOM_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="514.0" prefWidth="878.0" stylesheets="@../../../stylesheets/styles.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.interfaceonduleurv0.controller.RootController">
-    <stylesheets>
-        <URL value="@../../../stylesheets/styles.css" />
-    </stylesheets>
+<VBox fx:id="mainLayout" alignment="CENTER" cacheShape="false" centerShape="false" scaleShape="false" stylesheets="@../../../stylesheets/styles.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.interfaceonduleurv0.controller.RootController">
    <children>
       <HBox prefHeight="18.0" prefWidth="878.0">
          <cursor>
@@ -129,10 +125,10 @@
                   <ChoiceBox fx:id="choiceBoxDate" prefWidth="150.0" />
                   <LineChart fx:id="chartId">
                     <xAxis>
-                      <CategoryAxis side="BOTTOM" />
+                      <CategoryAxis fx:id="bottomLine" label="bottomLne" side="BOTTOM" />
                     </xAxis>
                     <yAxis>
-                      <NumberAxis side="LEFT" />
+                      <NumberAxis fx:id="topLine" side="LEFT" />
                     </yAxis>
                   </LineChart>
                </children>

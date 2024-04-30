@@ -1,6 +1,6 @@
 package com.example.interfaceonduleurv0.controller;
 
-import com.example.interfaceonduleurv0.RPI.ModeleConfiguration;
+import com.example.interfaceonduleurv0.modeles.ModeleConfiguration;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
@@ -32,7 +32,6 @@ public class ConfigControleur implements Initializable {
         try {
             bt_annuler.setOnAction(this::ev_bt_annuler);
             bt_valider.setOnAction(this::ev_bt_valider);
-            System.out.println("derrier event");
             fichier = new File("./config.bin");
             ObjectInputStream ois = new ObjectInputStream(new FileInputStream(fichier));
             ModeleConfiguration m = (ModeleConfiguration) ois.readObject();
@@ -76,7 +75,6 @@ public class ConfigControleur implements Initializable {
     public void ev_bt_annuler(ActionEvent actionEvent) {
         this.configStage.close();
     }
-
     public String trouverMac() {
         String mac = "?";
         //String homeDir = System.getenv("HOME");

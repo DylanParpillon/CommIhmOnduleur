@@ -1,9 +1,9 @@
 package com.example.interfaceonduleurv0.onduleur;
 
 import com.example.interfaceonduleurv0.controller.RootController;
-import com.example.interfaceonduleurv0.RPI.ModeleQPIGS;
-import com.example.interfaceonduleurv0.RPI.ModeleQPIRI;
-import com.example.interfaceonduleurv0.RPI.ModeleQPIWS;
+import com.example.interfaceonduleurv0.modeles.ModeleQPIGS;
+import com.example.interfaceonduleurv0.modeles.ModeleQPIRI;
+import com.example.interfaceonduleurv0.modeles.ModeleQPIWS;
 import javafx.application.Platform;
 import jssc.SerialPortEvent;
 import jssc.SerialPortException;

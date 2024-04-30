@@ -1,6 +1,6 @@
 package com.example.interfaceonduleurv0.SQl;
 
-import com.example.interfaceonduleurv0.RPI.ModeleData;
+import com.example.interfaceonduleurv0.modeles.ModeleData;
 
 import java.sql.*;
 import java.text.SimpleDateFormat;
@@ -38,14 +38,14 @@ public class SqlGestion {
         connection = sqlConn.getConnTestBdd();
         requeteAll = connection.prepareStatement("SELECT * FROM calculs ORDER BY date ASC");
         requete1 = connection.prepareStatement("SELECT * FROM calculs ORDER BY id_calcul DESC LIMIT ?");
-        requete2 = connection.prepareStatement("SELECT * FROM calculs WHERE date <= ? AND date >= ?");
-        requete3 = connection.prepareStatement("UPDATE calculs SET date = ?, energie = ?, gain = ? WHERE ROWID = ?");
+        requete2 = connection.prepareStatement("SELECT min(date) FROM calculs");
+        requete3 = connection.prepareStatement("UPDATE calculs SET date = ?, energie = ?, gain = ? WHERE date = ?");
         requete4 = connection.prepareStatement("INSERT INTO calculs(id_calcul,energie,gain,date) VALUES(null,?,?,?)");
         updatePrix = connection.prepareStatement("UPDATE prix SET prix = ? WHERE id_prix = 1");
         mesureAcs = connection.prepareStatement("SELECT * FROM mesures");
         switchUtoD = connection.prepareStatement("UPDATE mesures SET Ss_AC = ?, date = ? WHERE id_mesure = ?");
         requeteDates = connection.prepareStatement("SELECT SUBSTR(date,0,5) AS annee FROM calculs GROUP BY annee ORDER BY annee DESC ");
-        requeteAnnee = connection.prepareStatement("SELECT SUM(gain) gainYears, substr(date,1,4) temps FROM calculs where temps = '2022'");
+        requeteAnnee = connection.prepareStatement("SELECT SUM(gain) gainYears, substr(date,1,4) temps ,substr(date,6,2) mois FROM calculs where temps = ?  and mois = ?");
         requeteMois = connection.prepareStatement("SELECT SUM(gain) gainMonth, substr(date,1,7) temps FROM calculs where temps = ?");
         requeteJour = connection.prepareStatement("SELECT SUM(gain) gainDay, substr(date,1,10) temps FROM calculs where temps = ?");
         requeteHeure = connection.prepareStatement("SELECT SUM(gain) gainHours, substr(date,1,13) temps FROM calculs where temps = ?");
@@ -56,6 +56,12 @@ public class SqlGestion {
      * @return les données du mois précédent
      * @throws SQLException si une erreur SQL se produit lors de l'exécution de la requête
      */
+    public Double getStatMonthOnYears(String annee , String month) throws SQLException {
+        requeteAnnee.setString(1,annee);
+        requeteAnnee.setString(2,month);
+        ResultSet rs = requeteAnnee.executeQuery();
+        return rs.getDouble("gainYears");
+    }
     public String getlastMonth() throws SQLException {
         // Récupération du mois actuel
         String mois = sdf.format(new Timestamp(System.currentTimeMillis())).substring(0, 7);
@@ -160,8 +166,8 @@ public class SqlGestion {
      * @throws SQLException si une erreur SQL se produit lors de l'exécution de la requête
      */
     public void switchUtoDM(Double ac, String date, int i) throws SQLException {
-        switchUtoD.setDouble(1, ac);
-        switchUtoD.setString(2, date);
+        switchUtoD.setDouble(2, ac);
+        switchUtoD.setString(1, date);
         switchUtoD.setInt(3, i);
         switchUtoD.executeUpdate();
     }
@@ -228,10 +234,12 @@ public class SqlGestion {
         ModeleData dr = new ModeleData();
         ResultSet rs = connection.prepareStatement("SELECT * FROM prix").executeQuery();
         double gain = rs.getDouble("prix") * energie;
-        requete4.setDouble(1, energie);
-        requete4.setDouble(2, gain);
-        requete4.setString(3, ts);
-        requete4.executeUpdate();
+        rs = requete2.executeQuery();
+        requete3.setString(1, ts);
+        requete3.setDouble(2, gain);
+        requete3.setDouble(3, energie);
+        requete3.setString(4,rs.getString("min(date)"));
+        requete3.executeUpdate();
         dr.setEuro(gain);
         dr.setKilowatter(energie);
         return dr;

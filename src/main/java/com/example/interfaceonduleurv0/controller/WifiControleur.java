@@ -2,6 +2,7 @@ package com.example.interfaceonduleurv0.controller;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -35,17 +36,31 @@ public class WifiControleur implements Initializable {
     bt_valider.setOnAction(((event -> {
         try {
             ev_button_valider(event);
-        } catch (IOException e) {
+        } catch (IOException | InterruptedException e) {
             System.err.println(e.getMessage());
         }
     })));
+    bt_annuler.setOnAction(event -> {
+        wifiStage.close();
+    });
 
         }
-        public void ev_button_valider(ActionEvent actionEvent) throws IOException {
-        if(!tf_ssid.getText().isEmpty() & !tf_mdp.getText().isEmpty()){
-            String[] cmd = {"./determineMacEth.sh"};
-            Process p = Runtime.getRuntime().exec(cmd);
-            wifiStage.close();
+        public void ev_button_valider(ActionEvent actionEvent) throws IOException, InterruptedException {
+        if(!tf_ssid.getText().isEmpty()){
+           String[] cmd = {"./determineMacEth.sh"};
+           ProcessBuilder pb = new ProcessBuilder( cmd[0] , tf_ssid.getText() , tf_mdp.getText()  );
+           Process p = pb.start();
+           p.waitFor();
+           wifiStage.close();
+        }else {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Erreur de saisie");
+            if (tf_ssid.getText().isEmpty()) {
+                alert.setContentText("Ssid vide !");
+            }else {
+                alert.setContentText("mot de pass vide");
+            }
+            alert.showAndWait();
         }
 
         }

@@ -11,8 +11,8 @@ module com.example.interfaceonduleurv {
 
     opens com.example.interfaceonduleurv0 to javafx.fxml;
     exports com.example.interfaceonduleurv0;
-    exports com.example.interfaceonduleurv0.RPI;
-    opens com.example.interfaceonduleurv0.RPI to javafx.fxml;
+    exports com.example.interfaceonduleurv0.modeles;
+    opens com.example.interfaceonduleurv0.modeles to javafx.fxml;
     exports com.example.interfaceonduleurv0.controller;
     opens com.example.interfaceonduleurv0.controller to javafx.fxml;
 }
