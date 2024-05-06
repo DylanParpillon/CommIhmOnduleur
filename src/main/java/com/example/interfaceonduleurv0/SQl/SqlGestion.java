@@ -39,8 +39,10 @@ public class SqlGestion {
         requeteAll = connection.prepareStatement("SELECT * FROM calculs ORDER BY date ASC");
         requete1 = connection.prepareStatement("SELECT * FROM calculs ORDER BY id_calcul DESC LIMIT ?");
         requete2 = connection.prepareStatement("SELECT min(date) FROM calculs");
+
         requete3 = connection.prepareStatement("UPDATE calculs SET date = ?, energie = ?, gain = ? WHERE date = ?");
         requete4 = connection.prepareStatement("INSERT INTO calculs(id_calcul,energie,gain,date) VALUES(null,?,?,?)");
+
         updatePrix = connection.prepareStatement("UPDATE prix SET prix = ? WHERE id_prix = 1");
         mesureAcs = connection.prepareStatement("SELECT * FROM mesures");
         switchUtoD = connection.prepareStatement("UPDATE mesures SET Ss_AC = ?, date = ? WHERE id_mesure = ?");
