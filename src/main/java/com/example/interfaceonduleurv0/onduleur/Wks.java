@@ -33,15 +33,12 @@ RootController ctrl ;
     String[] dcp;
 
     public ModeleQPIGS qpigsModel() throws SQLException {
-        System.out.println("decodage de QPIGS");
         trameBrute = new byte[110];
 
         trameBrute = super.lireTrame(110);
         st_trameBrute = new String(trameBrute, StandardCharsets.US_ASCII);
         dcp = st_trameBrute.split(" ");
-        System.out.println("Qpigs = " + dcp.length);
         System.out.println("QPIGS recu");
-        System.out.println(st_trameBrute);
 //     System.out.println("""
 //                %s V = TensionDuReseau 0
 //                %s Hz = FrequenceDuReseau 1
@@ -101,7 +98,6 @@ RootController ctrl ;
         if (trameBrute.length == 104) {
             st_trameBrute = new String(trameBrute, StandardCharsets.US_ASCII);
             dcp = st_trameBrute.split(" ");
-            System.out.println("Qpiri = " + dcp.length);
             System.out.println("Qpiri recu");
 //
 //            System.out.println("Methode QPIRI");
@@ -155,7 +151,6 @@ RootController ctrl ;
         if (trameBrute.length == 40) {
             st_trameBrute = new String(trameBrute, StandardCharsets.US_ASCII);
             dcp = st_trameBrute.split(" ");
-            System.out.println("Qpiws = " + +dcp.length);
             System.out.println("QPIWS recu");
 //            System.out.println("""
 //                            %s = Reserved
@@ -251,7 +246,6 @@ RootController ctrl ;
         try {
             //
             Thread.sleep(750);
-            System.out.println("nbs d 'octets : " + serialPort.getInputBufferBytesCount());
             //QPIGS
             if (serialPort.getInputBufferBytesCount() == 110) {
                 qpigsModel();
@@ -271,17 +265,15 @@ RootController ctrl ;
         }
     }
 
-    public ModeleQPIGS demandeQPIGS() {
+    public void demandeQPIGS() {
         System.out.println("demandeQPIGS");
         StringBuilder sb = new StringBuilder();
         byte[] crc = intToByteArray(crc16CcittXmodel(QPIGS));
         for (byte b : ArrayUtils.add(ArrayUtils.addAll(QPIGS, crc), CR)) {
             sb.append(String.format("%02X ", b));
         }
-        System.out.println("Demande (hexa)  -> " + sb);
-        System.out.println("Demande (acsii) -> " + new String(ArrayUtils.add(ArrayUtils.addAll(QPIGS, crc), CR)));
+        System.out.println("demande done");
         super.ecrire(ArrayUtils.add(ArrayUtils.addAll(QPIGS, crc), CR));
-        return qpigs;
     }
 
     public void demandeQPIRI() {
@@ -291,9 +283,7 @@ RootController ctrl ;
         for (byte b : ArrayUtils.add(ArrayUtils.addAll(QPIRI, crc), CR)) {
             sb.append(String.format("%02X ", b));
         }
-
-        System.out.println("Demande (hexa)  -> " + sb);
-        System.out.println("Demande (acsii) -> " + new String(ArrayUtils.add(ArrayUtils.addAll(QPIRI, crc), CR)));
+        System.out.println("demande done");
         super.ecrire(ArrayUtils.add(ArrayUtils.addAll(QPIRI, crc), CR));
     }
 
@@ -303,9 +293,7 @@ RootController ctrl ;
         for (byte b : ArrayUtils.add(ArrayUtils.addAll(QPIWS, crc), CR)) {
             sb.append(String.format("%02X ", b));
         }
-
-        System.out.println("Demande (hexa)  -> " + sb);
-        System.out.println("Demande (acsii) -> " + new String(ArrayUtils.add(ArrayUtils.addAll(QPIWS, crc), CR)));
+        System.out.println("demande done");
         super.ecrire(ArrayUtils.add(ArrayUtils.addAll(QPIWS, crc), CR));
     }
 

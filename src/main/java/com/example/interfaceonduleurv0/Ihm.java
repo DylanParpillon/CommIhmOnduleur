@@ -19,10 +19,10 @@ public class Ihm extends Application {
     public void start(Stage primaryStage) throws IOException {
         this.primaryStage = primaryStage;
         this.primaryStage.setTitle("Info Systéme Onduleur");
-        this.primaryStage.setResizable(false);
+        this.primaryStage.setResizable(true);
         this.primaryStage.setIconified(false);
         //this.primaryStage.initStyle(StageStyle.UNDECORATED); //pour rpi full screen
-        this.primaryStage.setFullScreen(false);
+        this.primaryStage.setFullScreen(true);
         //this.primaryStage.setFullScreenExitHint(""); // disable fullscreen toggle hint
         //this.primaryStage.setFullScreenExitKeyCombination(KeyCombination.NO_MATCH); // prevent ESC toggling fullscreen
         rootView();

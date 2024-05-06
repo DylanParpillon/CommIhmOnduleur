@@ -14,13 +14,24 @@ import java.util.ArrayList;
 public class SqlGestion {
 
     /** Instance de SqlConn pour la connexion à la base de données. */
-    private SqlConn sqlConn;
+    private SqlConn sqlConn = new SqlConn();
 
     /** Connexion à la base de données. */
-    private Connection connection;
+    private Connection connection = sqlConn.getConnTestBdd();
 
     /** Requêtes SQL préparées pour différentes opérations. */
-    private PreparedStatement requeteAll, requete1, requete2, requete3,requete4 , updatePrix, mesureAcs, switchUtoD, requeteDates , requeteAnnee , requeteMois , requeteHeure,requeteJour;
+    private PreparedStatement requeteAll = connection.prepareStatement("SELECT * FROM calculs ORDER BY date ASC"),
+    requete1 = connection.prepareStatement("SELECT * FROM calculs ORDER BY id_calcul DESC LIMIT ?"),
+    requete2 = connection.prepareStatement("SELECT (JULIANDAY(?)  - JULIANDAY(?))* 24 delta"),
+    requete3 = connection.prepareStatement("INSERT INTO calculs(energie,gain) VALUES(?,?)"),
+    updatePrix = connection.prepareStatement("UPDATE prix SET prix = ? WHERE id_prix = 1"),
+    mesureAcs = connection.prepareStatement("SELECT * FROM mesures"),
+    switchUtoD = connection.prepareStatement("UPDATE mesures SET Ss_AC = ?, date = ? WHERE id_mesure = ?"),
+    requeteDates = connection.prepareStatement("SELECT SUBSTR(date,0,5) AS annee FROM calculs GROUP BY annee ORDER BY annee DESC "),
+    requeteAnnee = connection.prepareStatement("SELECT SUM(gain) gainYears, substr(date,1,4) temps ,substr(date,6,2) mois FROM calculs where temps = ?  and mois = ?"),
+    requeteMois = connection.prepareStatement("SELECT SUM(gain) gainMonth, substr(date,1,7) temps FROM calculs where temps = ?"),
+    requeteJour = connection.prepareStatement("SELECT SUM(gain) gainDay, substr(date,1,10) temps FROM calculs where temps = ?"),
+    requeteHeure = connection.prepareStatement("SELECT SUM(gain) gainHours, substr(date,1,13) temps FROM calculs where temps = ?");
 
     /** Valeur d'énergie. */
     private double energie;
@@ -34,20 +45,6 @@ public class SqlGestion {
      * @throws SQLException si une erreur SQL se produit lors de la connexion à la base de données
      */
     public SqlGestion() throws SQLException {
-        sqlConn = new SqlConn();
-        connection = sqlConn.getConnTestBdd();
-        requeteAll = connection.prepareStatement("SELECT * FROM calculs ORDER BY date ASC");
-        requete1 = connection.prepareStatement("SELECT * FROM calculs ORDER BY id_calcul DESC LIMIT ?");
-        requete2 = connection.prepareStatement("SELECT min(date) FROM calculs");
-        requete3 = connection.prepareStatement("INSERT INTO calculs(energie,gain) VALUES(?,?)");
-        updatePrix = connection.prepareStatement("UPDATE prix SET prix = ? WHERE id_prix = 1");
-        mesureAcs = connection.prepareStatement("SELECT * FROM mesures");
-        switchUtoD = connection.prepareStatement("UPDATE mesures SET Ss_AC = ?, date = ? WHERE id_mesure = ?");
-        requeteDates = connection.prepareStatement("SELECT SUBSTR(date,0,5) AS annee FROM calculs GROUP BY annee ORDER BY annee DESC ");
-        requeteAnnee = connection.prepareStatement("SELECT SUM(gain) gainYears, substr(date,1,4) temps ,substr(date,6,2) mois FROM calculs where temps = ?  and mois = ?");
-        requeteMois = connection.prepareStatement("SELECT SUM(gain) gainMonth, substr(date,1,7) temps FROM calculs where temps = ?");
-        requeteJour = connection.prepareStatement("SELECT SUM(gain) gainDay, substr(date,1,10) temps FROM calculs where temps = ?");
-        requeteHeure = connection.prepareStatement("SELECT SUM(gain) gainHours, substr(date,1,13) temps FROM calculs where temps = ?");
     }
     /**
      * Récupère les données du mois précédent.
@@ -146,12 +143,19 @@ public class SqlGestion {
                 saveAC.add(AC);
             }
             switchUtoDM(saveAC.get(1), sdf.format(saveDate.get(1)), 1);
-            double delta = Math.abs((saveDate.get(1).getTime() - timestamp.getTime())); // 2 eme c mtn
-            if (delta != 0) energie = (saveAC.get(0) * delta);
+            switchUtoDM(newAcValue, sdf.format(timestamp), 2);
+            requete2.setString(1,sdf.format(timestamp));
+            requete2.setString(2,sdf.format(saveDate.get(1)));
+            ResultSet rsDelta = requete2.executeQuery();
+            double delta= 0;
+            while (rsDelta.next()) {
+                delta = rsDelta.getDouble("delta");
+            }
+            System.out.println("delta" + delta);
+            if (delta != 0) energie = (saveAC.get(1) * delta)/1000;
             else energie = 0;
             ModeleData modeleData = stockValeur();
             dr.add(modeleData);
-            switchUtoDM(newAcValue, sdf.format(timestamp), 2);
         }
         return dr;
     }
@@ -165,8 +169,8 @@ public class SqlGestion {
      * @throws SQLException si une erreur SQL se produit lors de l'exécution de la requête
      */
     public void switchUtoDM(Double ac, String date, int i) throws SQLException {
-        switchUtoD.setDouble(2, ac);
-        switchUtoD.setString(1, date);
+        switchUtoD.setDouble(1, ac);
+        switchUtoD.setString(2, date);
         switchUtoD.setInt(3, i);
         switchUtoD.executeUpdate();
     }
@@ -232,12 +236,18 @@ public class SqlGestion {
         ModeleData dr = new ModeleData();
         ResultSet rs = connection.prepareStatement("SELECT * FROM prix").executeQuery();
         double gain = rs.getDouble("prix") * energie;
-         requete2.executeQuery();
         requete3.setDouble(1, gain);
         requete3.setDouble(2, energie);
         requete3.executeUpdate();
         dr.setEuro(gain);
         dr.setKilowatter(energie);
         return dr;
+    }
+    public void close() {
+        try {
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

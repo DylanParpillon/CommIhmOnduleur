@@ -48,7 +48,7 @@ public class WifiControleur implements Initializable {
         public void ev_button_valider(ActionEvent actionEvent) throws IOException, InterruptedException {
         if(!tf_ssid.getText().isEmpty()){
            String[] cmd = {"./determineMacEth.sh"};
-           ProcessBuilder pb = new ProcessBuilder( cmd[0] , tf_ssid.getText() , tf_mdp.getText()  );
+           ProcessBuilder pb = new ProcessBuilder( cmd[0] , tf_ssid.getText() , tf_mdp.getText()  ); //lancer le script  avec les parametre
            Process p = pb.start();
            p.waitFor();
            wifiStage.close();
