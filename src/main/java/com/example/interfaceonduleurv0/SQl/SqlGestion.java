@@ -39,10 +39,7 @@ public class SqlGestion {
         requeteAll = connection.prepareStatement("SELECT * FROM calculs ORDER BY date ASC");
         requete1 = connection.prepareStatement("SELECT * FROM calculs ORDER BY id_calcul DESC LIMIT ?");
         requete2 = connection.prepareStatement("SELECT min(date) FROM calculs");
-
-        requete3 = connection.prepareStatement("UPDATE calculs SET date = ?, energie = ?, gain = ? WHERE date = ?");
-        requete4 = connection.prepareStatement("INSERT INTO calculs(id_calcul,energie,gain,date) VALUES(null,?,?,?)");
-
+        requete3 = connection.prepareStatement("INSERT INTO calculs(energie,gain) VALUES(?,?)");
         updatePrix = connection.prepareStatement("UPDATE prix SET prix = ? WHERE id_prix = 1");
         mesureAcs = connection.prepareStatement("SELECT * FROM mesures");
         switchUtoD = connection.prepareStatement("UPDATE mesures SET Ss_AC = ?, date = ? WHERE id_mesure = ?");
@@ -130,12 +127,12 @@ public class SqlGestion {
      * Insère les nouvelles valeurs dans la base de données.
      *
      * @param newACs     les nouvelles valeurs à insérer
-     * @param timestamp  la date et l'heure à associer aux nouvelles valeurs
      * @return une liste de Données récupérées
      * @throws SQLException si une erreur SQL se produit lors de l'exécution des requêtes
      */
-    public ArrayList<ModeleData> mesure(ArrayList<String> newACs, Timestamp timestamp) throws SQLException {
+    public ArrayList<ModeleData> mesure(ArrayList<String> newACs) throws SQLException {
         ArrayList<ModeleData> dr = new ArrayList<>();
+        Timestamp timestamp =  new Timestamp(System.currentTimeMillis());
         int i = 1;
         for (String newAC : newACs) {
             double newAcValue = Double.parseDouble(newAC);
@@ -149,10 +146,10 @@ public class SqlGestion {
                 saveAC.add(AC);
             }
             switchUtoDM(saveAC.get(1), sdf.format(saveDate.get(1)), 1);
-            double delta = Math.abs((saveDate.get(1).getTime() - saveDate.get(0).getTime()));
-            if (delta != 0) energie = (saveAC.get(0) / delta);
+            double delta = Math.abs((saveDate.get(1).getTime() - timestamp.getTime())); // 2 eme c mtn
+            if (delta != 0) energie = (saveAC.get(0) * delta);
             else energie = 0;
-            ModeleData modeleData = stockValeur(sdf.format(timestamp));
+            ModeleData modeleData = stockValeur();
             dr.add(modeleData);
             switchUtoDM(newAcValue, sdf.format(timestamp), 2);
         }
@@ -228,19 +225,16 @@ public class SqlGestion {
     /**
      * Insère les valeurs stockées dans la base de données.
      *
-     * @param ts    le timestamp associé aux valeurs
      * @return les données récupérées
      * @throws SQLException si une erreur SQL se produit lors de l'exécution de la requête
      */
-    private ModeleData stockValeur(String ts) throws SQLException {
+    private ModeleData stockValeur() throws SQLException {
         ModeleData dr = new ModeleData();
         ResultSet rs = connection.prepareStatement("SELECT * FROM prix").executeQuery();
         double gain = rs.getDouble("prix") * energie;
-        rs = requete2.executeQuery();
-        requete3.setString(1, ts);
-        requete3.setDouble(2, gain);
-        requete3.setDouble(3, energie);
-        requete3.setString(4,rs.getString("min(date)"));
+         requete2.executeQuery();
+        requete3.setDouble(1, gain);
+        requete3.setDouble(2, energie);
         requete3.executeUpdate();
         dr.setEuro(gain);
         dr.setKilowatter(energie);

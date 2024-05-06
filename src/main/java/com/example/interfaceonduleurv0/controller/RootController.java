@@ -24,7 +24,6 @@ import jssc.SerialPortException;
 
 import java.net.URL;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.util.*;
 
 /** @author Dydou P
@@ -168,7 +167,7 @@ public class RootController implements Initializable {
                     for(ModeleQPIGS  qpigs : dataQPIGS){ puissanceAc.add(qpigs.getPuissanceActiveDeSortie_AC());}
                     saveTest = modeleQPIGS.getPuissanceActiveDeSortie_AC();
                     System.out.println("Puissance diff");
-                    stockValeurEnvoie = sqlGestion.mesure(puissanceAc, new Timestamp(System.currentTimeMillis()));
+                    stockValeurEnvoie = sqlGestion.mesure(puissanceAc );
                     System.out.println("Mesure effectuer");
                     updateGainGraph(sqlGestion);
                     boolean dataStatue =  bddDistante.post(stockValeurEnvoie);
