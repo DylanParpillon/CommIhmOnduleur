@@ -7,6 +7,7 @@ import com.example.interfaceonduleurv0.modeles.ModeleData;
 import com.example.interfaceonduleurv0.modeles.ModeleQPIGS;
 import com.example.interfaceonduleurv0.modeles.ModeleQPIRI;
 import com.example.interfaceonduleurv0.modeles.ModeleQPIWS;
+import com.example.interfaceonduleurv0.onduleur.LiaisonSerie;
 import com.example.interfaceonduleurv0.onduleur.Wks;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -40,7 +41,7 @@ public class RootController implements Initializable {
     }
 
     /** Référence à la base de données distante. */
-    public BddDistante bddDistante = new BddDistante("ws://10.0.0.172:8080/insertearnings");
+    public BddDistante bddDistante = new BddDistante();
 
     /** Bouton de contrôle. */
     public Button buttonId;
@@ -110,6 +111,7 @@ public class RootController implements Initializable {
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        labelStatut.setText(new LiaisonSerie().listerLesPorts().toString());
         ButtonSetting.setOnAction(e -> {
         ihm.configView();
          });
@@ -136,7 +138,7 @@ public class RootController implements Initializable {
             System.err.println(e + " sql erreur");
         }
         partiGraphique();
-        TimerTask partieBddCalcule= new TimerTask() {
+        TimerTask partieBddCalculs= new TimerTask() {
             @Override
             public void run() {
                 try {
@@ -148,19 +150,18 @@ public class RootController implements Initializable {
                         System.out.println("Puissance diff");
                         stockValeurEnvoie = sqlGestion.mesure(puissanceAc);
                         System.out.println("Mesure effectuer");
-                        /*boolean dataStatue = bddDistante.post(stockValeurEnvoie);
+                        boolean dataStatue = bddDistante.post(stockValeurEnvoie);
                         if (dataStatue) {
                             System.out.println("envoyer");
                             //mettre l'icone connexion
                             stockValeurEnvoie.clear();
-
-                    }*/ dataQPIGS.clear();
+                    } dataQPIGS.clear();
                 } catch (SQLException e) {
                     System.err.println(e + "erreur Sql");
                 }
             }
         };
-        bdt2.scheduleAtFixedRate(partieBddCalcule,0,60000);
+        bdt2.scheduleAtFixedRate(partieBddCalculs,0,60000);
 
 }
     public void partiGraphique(){

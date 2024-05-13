@@ -2,6 +2,9 @@ package com.example.interfaceonduleurv0.SQl;
 
 import com.example.interfaceonduleurv0.modeles.ModeleData;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -61,7 +64,7 @@ public class SqlGestion {
     public String getlastMonth() throws SQLException {
         // Récupération du mois actuel
         String mois = sdf.format(new Timestamp(System.currentTimeMillis())).substring(0, 7);
-        System.out.println(mois + "mois");
+        System.out.println(mois + " mois");
 
         // Préparation de la requête SQL pour récupérer les données du mois précédent
         requeteMois.setString(1, mois);
@@ -79,7 +82,7 @@ public class SqlGestion {
     public String getlastHours() throws SQLException {
         // Récupération de l'heure actuelle
         String heure = sdf.format(new Timestamp(System.currentTimeMillis())).substring(0, 13);
-        System.out.println(heure + "heure");
+        System.out.println(heure + " heure");
 
         // Préparation de la requête SQL pour récupérer les données de la dernière heure
         requeteHeure.setString(1, heure);
@@ -97,7 +100,7 @@ public class SqlGestion {
     public String getlastDay() throws SQLException {
         // Récupération du jour actuel
         String day = sdf.format(new Timestamp(System.currentTimeMillis())).substring(0, 10);
-        System.out.println(day + "jour");
+        System.out.println(day + " jour");
 
         // Préparation de la requête SQL pour récupérer les données du dernier jour
         requeteJour.setString(1, day);
@@ -154,7 +157,7 @@ public class SqlGestion {
             System.out.println("delta" + delta);
             if (delta != 0) energie = (saveAC.get(1) * delta)/1000;
             else energie = 0;
-            ModeleData modeleData = stockValeur();
+            ModeleData modeleData = stockValeur(timestamp);
             dr.add(modeleData);
         }
         return dr;
@@ -217,7 +220,7 @@ public class SqlGestion {
         ArrayList<ModeleData> lastValue = new ArrayList<>();
         ModeleData dc = new ModeleData();
         while (rs.next()) {
-            dc.setMacAddress("00:00:00:00");
+           // dc.setMacAddress("00:00:00:00");
             dc.setDate(rs.getDate("date"));
             dc.setEuro(rs.getDouble("gain"));
             dc.setKilowatter(rs.getDouble("energie"));
@@ -232,16 +235,37 @@ public class SqlGestion {
      * @return les données récupérées
      * @throws SQLException si une erreur SQL se produit lors de l'exécution de la requête
      */
-    private ModeleData stockValeur() throws SQLException {
+    private ModeleData stockValeur(Timestamp date) throws SQLException {
         ModeleData dr = new ModeleData();
         ResultSet rs = connection.prepareStatement("SELECT * FROM prix").executeQuery();
         double gain = rs.getDouble("prix") * energie;
         requete3.setDouble(1, gain);
         requete3.setDouble(2, energie);
         requete3.executeUpdate();
+       // dr.setMacAddress("00:00:00:00:00");
+        dr.setDate(date);
         dr.setEuro(gain);
         dr.setKilowatter(energie);
         return dr;
+    }
+
+    public String trouverMac() {
+        String mac = "?";
+        String[] cmd = {"./determineMacEth.sh"};
+        try {
+            Process p = Runtime.getRuntime().exec(cmd);
+            BufferedReader reponse = new BufferedReader(new InputStreamReader(p.getInputStream()));
+            StringBuilder stringBuilderMac = new StringBuilder();
+            String line;
+            while ((line = reponse.readLine()) != null) {
+                stringBuilderMac.append(line);
+            }
+            mac = stringBuilderMac.toString();
+            System.out.println("mac= " + mac);
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+        return mac.toLowerCase();
     }
     public void close() {
         try {

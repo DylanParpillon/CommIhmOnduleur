@@ -1,5 +1,6 @@
 package com.example.interfaceonduleurv0.controller;
 
+import com.example.interfaceonduleurv0.Distant.BddDistante;
 import com.example.interfaceonduleurv0.modeles.ModeleConfiguration;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
@@ -55,6 +56,8 @@ public class ConfigControleur implements Initializable {
                 fichier = new File("./config.bin");
                 ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(fichier));
                 oos.writeObject(modeleConfiguration);
+                BddDistante bddDistante = new BddDistante();
+                bddDistante.insertInverter(modeleConfiguration);
                 oos.close();
                 this.configStage.close();
             } else {
