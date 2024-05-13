@@ -3,10 +3,7 @@ package com.example.interfaceonduleurv0.controller;
 import com.example.interfaceonduleurv0.Distant.BddDistante;
 import com.example.interfaceonduleurv0.Ihm;
 import com.example.interfaceonduleurv0.SQl.SqlGestion;
-import com.example.interfaceonduleurv0.modeles.ModeleData;
-import com.example.interfaceonduleurv0.modeles.ModeleQPIGS;
-import com.example.interfaceonduleurv0.modeles.ModeleQPIRI;
-import com.example.interfaceonduleurv0.modeles.ModeleQPIWS;
+import com.example.interfaceonduleurv0.modeles.*;
 import com.example.interfaceonduleurv0.onduleur.LiaisonSerie;
 import com.example.interfaceonduleurv0.onduleur.Wks;
 import javafx.application.Platform;
@@ -22,6 +19,10 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import jssc.SerialPortException;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.*;
@@ -102,6 +103,8 @@ public class RootController implements Initializable {
      */
     public RootController() throws SQLException {
     }
+    private File fichier;
+    ModeleConfiguration m;
 
     /**
      * Méthode d'initialisation de la classe RootController.
@@ -112,12 +115,17 @@ public class RootController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         labelStatut.setText(new LiaisonSerie().listerLesPorts().toString());
-        ButtonSetting.setOnAction(e -> {
-        ihm.configView();
-         });
-        buttonServer.setOnAction((e) -> {
-            ihm.wifiView();
-        });
+        ButtonSetting.setOnAction(e -> {ihm.configView();});
+        buttonServer.setOnAction((e) -> {ihm.wifiView();});
+        new Thread(()->{
+            fichier = new File("./config.bin");
+            ObjectInputStream ois = null;
+            try {
+                ois = new ObjectInputStream(new FileInputStream(fichier));
+            m = (ModeleConfiguration) ois.readObject(); } catch (IOException | ClassNotFoundException e) {
+                System.err.println(e);
+        }
+        }).start();
         try {
             ObservableList<String> ObList = FXCollections.observableList(sqlGestion.getAllDate());
             choiceBoxDate.setItems(ObList);
@@ -140,17 +148,16 @@ public class RootController implements Initializable {
         partiGraphique();
         TimerTask partieBddCalculs= new TimerTask() {
             @Override
-            public void run() {
-                try {
+            public void run() {try {
                         ArrayList<String> puissanceAc = new ArrayList<>();
                         for (ModeleQPIGS qpigs : dataQPIGS) {
                             puissanceAc.add(qpigs.getPuissanceActiveDeSortie_AC());
                             System.out.println(qpigs.getPuissanceActiveDeSortie_AC());
                         }
                         System.out.println("Puissance diff");
-                        stockValeurEnvoie = sqlGestion.mesure(puissanceAc);
+                        stockValeurEnvoie = sqlGestion.mesure(puissanceAc ,"33:33:33:33:33:33");
                         System.out.println("Mesure effectuer");
-                        boolean dataStatue = bddDistante.post(stockValeurEnvoie);
+                        boolean dataStatue = bddDistante.post(stockValeurEnvoie , "http://10.0.0.172:8080");
                         if (dataStatue) {
                             System.out.println("envoyer");
                             //mettre l'icone connexion
@@ -158,10 +165,12 @@ public class RootController implements Initializable {
                     } dataQPIGS.clear();
                 } catch (SQLException e) {
                     System.err.println(e + "erreur Sql");
+                } catch (IOException e) {
+                    System.err.println(e + " erreur connection");;
                 }
             }
         };
-        bdt2.scheduleAtFixedRate(partieBddCalculs,0,60000);
+        bdt2.scheduleAtFixedRate(partieBddCalculs,2000,60000);
 
 }
     public void partiGraphique(){

@@ -130,7 +130,7 @@ public class SqlGestion {
      * @return une liste de Données récupérées
      * @throws SQLException si une erreur SQL se produit lors de l'exécution des requêtes
      */
-    public ArrayList<ModeleData> mesure(ArrayList<String> newACs) throws SQLException {
+    public ArrayList<ModeleData> mesure(ArrayList<String> newACs , String mac) throws SQLException {
         ArrayList<ModeleData> dr = new ArrayList<>();
         Timestamp timestamp =  new Timestamp(System.currentTimeMillis());
         int i = 1;
@@ -157,7 +157,7 @@ public class SqlGestion {
             System.out.println("delta" + delta);
             if (delta != 0) energie = (saveAC.get(1) * delta)/1000;
             else energie = 0;
-            ModeleData modeleData = stockValeur(timestamp);
+            ModeleData modeleData = stockValeur(timestamp , mac );
             dr.add(modeleData);
         }
         return dr;
@@ -217,13 +217,12 @@ public class SqlGestion {
     public ModeleData getLastValue() throws SQLException {
         requete1.setInt(1, 1);
         ResultSet rs = requete1.executeQuery();
-        ArrayList<ModeleData> lastValue = new ArrayList<>();
         ModeleData dc = new ModeleData();
         while (rs.next()) {
-           // dc.setMacAddress("00:00:00:00");
             dc.setDate(rs.getDate("date"));
             dc.setEuro(rs.getDouble("gain"));
             dc.setKilowatter(rs.getDouble("energie"));
+
         }
         return dc;
     }
@@ -235,14 +234,14 @@ public class SqlGestion {
      * @return les données récupérées
      * @throws SQLException si une erreur SQL se produit lors de l'exécution de la requête
      */
-    private ModeleData stockValeur(Timestamp date) throws SQLException {
+    private ModeleData stockValeur(Timestamp date , String mac) throws SQLException {
         ModeleData dr = new ModeleData();
         ResultSet rs = connection.prepareStatement("SELECT * FROM prix").executeQuery();
         double gain = rs.getDouble("prix") * energie;
         requete3.setDouble(1, gain);
         requete3.setDouble(2, energie);
         requete3.executeUpdate();
-       // dr.setMacAddress("00:00:00:00:00");
+        dr.setMacAddress(mac);
         dr.setDate(date);
         dr.setEuro(gain);
         dr.setKilowatter(energie);

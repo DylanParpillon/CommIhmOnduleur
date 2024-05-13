@@ -1,6 +1,5 @@
 package com.example.interfaceonduleurv0.controller;
 
-import com.example.interfaceonduleurv0.Distant.BddDistante;
 import com.example.interfaceonduleurv0.modeles.ModeleConfiguration;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
@@ -50,28 +49,26 @@ public class ConfigControleur implements Initializable {
     }
 
     public void ev_bt_valider(ActionEvent actionEvent) {
-        try {
-            if ((tf_latitude.getText().matches(regex)) && (tf_longitude.getText().matches(regex) && (tf_serveur.getText().matches(regexUrl)))) {
-                modeleConfiguration = new ModeleConfiguration(tf_mac.getText(), tf_latitude.getText(), tf_longitude.getText(), tf_serveur.getText());
-                fichier = new File("./config.bin");
-                ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(fichier));
-                oos.writeObject(modeleConfiguration);
-                BddDistante bddDistante = new BddDistante();
-                bddDistante.insertInverter(modeleConfiguration);
-                oos.close();
-                this.configStage.close();
-            } else {
-                //modeleConfiguration = new ModeleConfiguration("11:22:33:44:55:66", "0.0", "0.0");
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Erreur de saisie");
-                if (!(tf_latitude.getText().matches(regex)) || !(tf_longitude.getText().matches(regex))) {
-                    alert.setContentText("format latitude et longitude: nombre!");
-                }else {
-                    alert.setContentText("format @Serveur : url!");
-                }
-                alert.showAndWait();
+        if ((tf_latitude.getText().matches(regex)) && (tf_longitude.getText().matches(regex) && (tf_serveur.getText().matches(regexUrl)))) {
+            System.out.println("blblblb");
+           /* modeleConfiguration = new ModeleConfiguration(tf_mac.getText(), tf_latitude.getText(), tf_longitude.getText(), tf_serveur.getText());
+            fichier = new File("./config.bin");
+            ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(fichier));
+            oos.writeObject(modeleConfiguration);
+            oos.close();
+            */
+            modeleConfiguration = new ModeleConfiguration("11:22:33:44:55:66", "0.0", "0.0",tf_serveur.getText());
+            this.configStage.close();
+        } else {
+            modeleConfiguration = new ModeleConfiguration("11:22:33:44:55:66", "0.0", "0.0",tf_serveur.getText());
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Erreur de saisie");
+            if (!(tf_latitude.getText().matches(regex)) || !(tf_longitude.getText().matches(regex))) {
+                alert.setContentText("format latitude et longitude: nombre!");
+            }else {
+                alert.setContentText("format @Serveur : url!");
             }
-        } catch (IOException e) {
+            alert.showAndWait();
         }
     }
 

@@ -6,7 +6,7 @@
 <AnchorPane prefHeight="216.0" prefWidth="588.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.interfaceonduleurv0.controller.ConfigControleur">
    <children>
       <TextField fx:id="tf_latitude" layoutX="75.0" layoutY="41.0" />
-      <TextField fx:id="tf_serveur" layoutX="75.0" layoutY="99.0" />
+      <TextField fx:id="tf_serveur" layoutX="75.0" layoutY="99.0" text="http://10.0.0.172:8080" />
       <TextField fx:id="tf_longitude" layoutX="351.0" layoutY="41.0" />
       <TextField fx:id="tf_mac" disable="true" layoutX="351.0" layoutY="99.0" />
       <Button fx:id="bt_valider" layoutX="389.0" layoutY="184.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="73.0" text="Valider" />

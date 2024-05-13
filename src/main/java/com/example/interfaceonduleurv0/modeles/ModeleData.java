@@ -8,7 +8,7 @@ import java.util.Date;
 public class ModeleData {
 
     /** Adresse MAC associée aux données. */
-    //private String macAddress;
+    private String macAddress;
 
     /** Date des données. */
     private String date;
@@ -24,7 +24,7 @@ public class ModeleData {
      *
      * @return l'adresse MAC
      */
-   /* public String getMacAddress() {
+   public String getMacAddress() {
         return macAddress;
     }
 
@@ -32,7 +32,6 @@ public class ModeleData {
     public void setMacAddress(String macAddress) {
         this.macAddress = macAddress;
     }
-*/
     /**
      * Renvoie la date des données.
      *
