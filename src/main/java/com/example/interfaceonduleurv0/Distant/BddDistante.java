@@ -9,7 +9,6 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 
 /**
  * Cette classe gère l'envoi de données à une base de données distante via des requêtes HTTP.
@@ -67,37 +66,36 @@ public class BddDistante {
      *
      * @param values les valeurs à envoyer à la base de données
      */
-    public boolean post(ArrayList<ModeleData> values,  String ipServer) throws IOException {
+    public boolean post(ModeleData values,  String ipServer) throws IOException {
         URL url;
         url = new URL(ipServer + addressEarning);
-        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-        // Paramètres de la requête HTTP POST
-        connection.setRequestMethod("POST");
-        connection.setRequestProperty("Content-Type", "application/json");
-        connection.setDoOutput(true);
-        // Conversion des données en format JSON et envoi
-        ArrayList<String> data = new ArrayList<>();
-        ObjectMapper objectMapper = new ObjectMapper();
-        for (ModeleData b : values) {
-            String jsonData = objectMapper.writeValueAsString(b);
-            System.out.println(jsonData);
-            data.add(jsonData);
-        }
-        try (OutputStream os = connection.getOutputStream()) {
-            for (String datat : data) {
-                byte[] input = datat.getBytes("UTF-8");
-                os.write(input, 0, input.length);
-                os.flush();
-            }
-        }
-        int responseCode = connection.getResponseCode();
-        System.out.println( responseCode);
-        if (responseCode == 200) {
-            System.out.println("Configuration a été envoyées avec succès !");
-            connection.disconnect();
-            return true;
-        }
-        connection.disconnect();
-        return false;
+        //url = new URL(ipServer + addressEarning);
+        HttpURLConnection co = (HttpURLConnection) url.openConnection();
+        if(values != null) {
+            co.setDoInput(true);
+            co.setDoOutput(true);
+            co.setRequestMethod("POST");
+            co.addRequestProperty("Content-Type", "application/json");
+            System.out.println("co :: " + co);
+            co.setReadTimeout(10000);
+            co.setConnectTimeout(15000);
+            co.connect();
+            // Conversion des données en format JSON et envoi
+            ObjectMapper objectMapper = new ObjectMapper();
+            OutputStream printout = co.getOutputStream();
+                String jsonData = objectMapper.writeValueAsString(values);
+                System.out.println(jsonData);
+                printout.write(jsonData.getBytes());
+                System.out.println("envoyer");
+            printout.close();
+            int responseCode = co.getResponseCode();
+            System.out.println(responseCode + " code reçu");
+            if (responseCode == 200) {
+                System.out.println("Configuration a été envoyées avec succès !");
+                co.disconnect();
+                return true;
+            } }
+            co.disconnect();
+            return false;
     }
     }

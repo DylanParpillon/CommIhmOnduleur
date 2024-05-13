@@ -130,35 +130,30 @@ public class SqlGestion {
      * @return une liste de Données récupérées
      * @throws SQLException si une erreur SQL se produit lors de l'exécution des requêtes
      */
-    public ArrayList<ModeleData> mesure(ArrayList<String> newACs , String mac) throws SQLException {
-        ArrayList<ModeleData> dr = new ArrayList<>();
+    public ModeleData mesure(ArrayList<String> newACs , String mac) throws SQLException {
+        ModeleData dr = new ModeleData();
         Timestamp timestamp =  new Timestamp(System.currentTimeMillis());
-        int i = 1;
+       double newAcValue = 0;
         for (String newAC : newACs) {
-            double newAcValue = Double.parseDouble(newAC);
+            newAcValue  = newAcValue + Double.parseDouble(newAC);
             ArrayList<Timestamp> saveDate = new ArrayList<>();
-            ArrayList<Double> saveAC = new ArrayList<>();
             ResultSet rs = mesureAcs.executeQuery();
             while (rs.next()) {
                 Timestamp dateS = rs.getTimestamp("date");
-                double AC = rs.getDouble("Ss_AC");
                 saveDate.add(dateS);
-                saveAC.add(AC);
             }
-            switchUtoDM(saveAC.get(1), sdf.format(saveDate.get(1)), 1);
+            switchUtoDM(newAcValue, sdf.format(saveDate.get(1)), 1);
             switchUtoDM(newAcValue, sdf.format(timestamp), 2);
             requete2.setString(1,sdf.format(timestamp));
             requete2.setString(2,sdf.format(saveDate.get(1)));
             ResultSet rsDelta = requete2.executeQuery();
-            double delta= 0;
+            double delta = 0;
             while (rsDelta.next()) {
                 delta = rsDelta.getDouble("delta");
             }
             System.out.println("delta" + delta);
-            if (delta != 0) energie = (saveAC.get(1) * delta)/1000;
-            else energie = 0;
-            ModeleData modeleData = stockValeur(timestamp , mac );
-            dr.add(modeleData);
+            energie = (newAcValue * delta)/1000;
+            dr = stockValeur(timestamp , mac );
         }
         return dr;
     }

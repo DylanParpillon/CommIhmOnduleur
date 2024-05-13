@@ -88,7 +88,7 @@ public class RootController implements Initializable {
     SqlGestion sqlGestion = new SqlGestion();
 
     /** Liste pour stocker les valeurs à envoyer. */
-    ArrayList<ModeleData> stockValeurEnvoie = new ArrayList<>();
+  ModeleData stockValeurEnvoie = new ModeleData();
 
     /** Instance de la classe Wks pour la communication avec le matériel. */
     Wks wks = new Wks(this);
@@ -155,13 +155,12 @@ public class RootController implements Initializable {
                             System.out.println(qpigs.getPuissanceActiveDeSortie_AC());
                         }
                         System.out.println("Puissance diff");
-                        stockValeurEnvoie = sqlGestion.mesure(puissanceAc ,"33:33:33:33:33:33");
+                        stockValeurEnvoie = sqlGestion.mesure(puissanceAc ,m.getMac());
                         System.out.println("Mesure effectuer");
-                        boolean dataStatue = bddDistante.post(stockValeurEnvoie , "http://10.0.0.172:8080");
+                        boolean dataStatue = bddDistante.post(stockValeurEnvoie , m.getIpServeur());
                         if (dataStatue) {
                             System.out.println("envoyer");
                             //mettre l'icone connexion
-                            stockValeurEnvoie.clear();
                     } dataQPIGS.clear();
                 } catch (SQLException e) {
                     System.err.println(e + "erreur Sql");
