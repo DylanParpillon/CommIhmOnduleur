@@ -2,9 +2,6 @@ package com.example.interfaceonduleurv0.SQl;
 
 import com.example.interfaceonduleurv0.modeles.ModeleData;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -130,19 +127,21 @@ public class SqlGestion {
      * @return une liste de Données récupérées
      * @throws SQLException si une erreur SQL se produit lors de l'exécution des requêtes
      */
-    public ModeleData mesure(ArrayList<String> newACs , String mac) throws SQLException {
-        ModeleData dr = new ModeleData();
+    public ModeleData mesure(ArrayList<String> newACs) throws SQLException {
+        ModeleData dr ;
         Timestamp timestamp =  new Timestamp(System.currentTimeMillis());
        double newAcValue = 0;
-        for (String newAC : newACs) {
-            newAcValue  = newAcValue + Double.parseDouble(newAC);
+        for (String newAC : newACs) {newAcValue  = newAcValue + Double.parseDouble(newAC);  }
+
             ArrayList<Timestamp> saveDate = new ArrayList<>();
+            double saveAc = 0;
             ResultSet rs = mesureAcs.executeQuery();
             while (rs.next()) {
                 Timestamp dateS = rs.getTimestamp("date");
+                saveAc = rs.getDouble("Ss_AC");
                 saveDate.add(dateS);
             }
-            switchUtoDM(newAcValue, sdf.format(saveDate.get(1)), 1);
+            switchUtoDM(saveAc, sdf.format(saveDate.get(1)), 1);
             switchUtoDM(newAcValue, sdf.format(timestamp), 2);
             requete2.setString(1,sdf.format(timestamp));
             requete2.setString(2,sdf.format(saveDate.get(1)));
@@ -153,8 +152,8 @@ public class SqlGestion {
             }
             System.out.println("delta" + delta);
             energie = (newAcValue * delta)/1000;
-            dr = stockValeur(timestamp , mac );
-        }
+            dr = stockValeur(timestamp);
+
         return dr;
     }
 
@@ -229,43 +228,18 @@ public class SqlGestion {
      * @return les données récupérées
      * @throws SQLException si une erreur SQL se produit lors de l'exécution de la requête
      */
-    private ModeleData stockValeur(Timestamp date , String mac) throws SQLException {
+    private ModeleData stockValeur(Timestamp date ) throws SQLException {
         ModeleData dr = new ModeleData();
         ResultSet rs = connection.prepareStatement("SELECT * FROM prix").executeQuery();
         double gain = rs.getDouble("prix") * energie;
         requete3.setDouble(1, gain);
         requete3.setDouble(2, energie);
         requete3.executeUpdate();
-        dr.setMacAddress(mac);
         dr.setDate(date);
         dr.setEuro(gain);
         dr.setKilowatter(energie);
         return dr;
     }
 
-    public String trouverMac() {
-        String mac = "?";
-        String[] cmd = {"./determineMacEth.sh"};
-        try {
-            Process p = Runtime.getRuntime().exec(cmd);
-            BufferedReader reponse = new BufferedReader(new InputStreamReader(p.getInputStream()));
-            StringBuilder stringBuilderMac = new StringBuilder();
-            String line;
-            while ((line = reponse.readLine()) != null) {
-                stringBuilderMac.append(line);
-            }
-            mac = stringBuilderMac.toString();
-            System.out.println("mac= " + mac);
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
-        }
-        return mac.toLowerCase();
-    }
-    public void close() {
-        try {
-            connection.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
+
 }

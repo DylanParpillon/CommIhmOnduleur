@@ -7,20 +7,20 @@
 
 <VBox fx:id="mainLayout" alignment="CENTER" cacheShape="false" centerShape="false" scaleShape="false" stylesheets="@../../../stylesheets/styles.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.interfaceonduleurv0.controller.RootController">
    <children>
-      <HBox prefHeight="18.0" prefWidth="878.0">
+      <HBox prefHeight="18.0" prefWidth="20.0">
          <cursor>
             <Cursor fx:constant="DEFAULT" />
          </cursor></HBox>
       <HBox prefHeight="214.0" prefWidth="768.0">
          <children>
-            <GridPane prefHeight="187.0" prefWidth="392.0" stylesheets="@../../../stylesheets/styles.css">
+            <GridPane prefHeight="187.0" prefWidth="1000.0" stylesheets="@../../../stylesheets/styles.css">
               <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
               </columnConstraints>
               <rowConstraints>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="103.0" minHeight="10.0" prefHeight="103.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="103.0" minHeight="10.0" prefHeight="95.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
                    <VBox prefHeight="200.0" prefWidth="100.0" styleClass="grid-label">
@@ -52,10 +52,16 @@
                   <Cursor fx:constant="DEFAULT" />
                </cursor>
             </GridPane>
-            <Label fx:id="labelStatut" prefHeight="186.0" prefWidth="381.0" text="Label">
-               <cursor>
-                  <Cursor fx:constant="DEFAULT" />
-               </cursor></Label>
+            <VBox fx:id="labelBox" alignment="TOP_CENTER" prefHeight="2000.0" prefWidth="1000.0">
+               <children>
+                  <Label fx:id="labelStatut" prefHeight="186.0" prefWidth="381.0" text="Label">
+                     <cursor>
+                        <Cursor fx:constant="DEFAULT" />
+                     </cursor>
+                  </Label>
+                  <Label fx:id="labelEnvoie" text="Données no  envoyer" />
+               </children>
+            </VBox>
          </children>
          <cursor>
             <Cursor fx:constant="DEFAULT" />
@@ -123,7 +129,7 @@
             <VBox prefHeight="264.0" prefWidth="481.0">
                <children>
                   <ChoiceBox fx:id="choiceBoxDate" prefWidth="150.0" />
-                  <LineChart fx:id="chartId">
+                  <LineChart fx:id="chartId" prefHeight="224.0" prefWidth="480.0">
                     <xAxis>
                       <CategoryAxis fx:id="bottomLine" label="bottomLne" side="BOTTOM" />
                     </xAxis>
@@ -131,6 +137,13 @@
                       <NumberAxis fx:id="topLine" side="LEFT" />
                     </yAxis>
                   </LineChart>
+                  <HBox prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <RadioButton mnemonicParsing="false" text="Utilisation  " textFill="WHITE" />
+                        <RadioButton mnemonicParsing="false" text="PanneauSolaire    " textFill="WHITE" />
+                        <RadioButton mnemonicParsing="false" text="Batterie" textFill="WHITE" />
+                     </children>
+                  </HBox>
                </children>
                <cursor>
                   <Cursor fx:constant="DEFAULT" />

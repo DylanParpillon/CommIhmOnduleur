@@ -7,8 +7,10 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyCombination;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.io.IOException;
 
@@ -21,10 +23,10 @@ public class Ihm extends Application {
         this.primaryStage.setTitle("Info Systéme Onduleur");
         this.primaryStage.setResizable(true);
         this.primaryStage.setIconified(false);
-        //this.primaryStage.initStyle(StageStyle.UNDECORATED); //pour rpi full screen
-        this.primaryStage.setFullScreen(true);
-        //this.primaryStage.setFullScreenExitHint(""); // disable fullscreen toggle hint
-        //this.primaryStage.setFullScreenExitKeyCombination(KeyCombination.NO_MATCH); // prevent ESC toggling fullscreen
+        this.primaryStage.initStyle(StageStyle.UNDECORATED); //pour rpi full screen
+        this.primaryStage.setFullScreen(false);
+        this.primaryStage.setFullScreenExitHint(""); // disable fullscreen toggle hint
+        this.primaryStage.setFullScreenExitKeyCombination(KeyCombination.NO_MATCH); // prevent ESC toggling fullscreen
         rootView();
     }
 

@@ -1,6 +1,7 @@
 package com.example.interfaceonduleurv0.controller;
 
 import com.example.interfaceonduleurv0.modeles.ModeleConfiguration;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
@@ -30,15 +31,18 @@ public class ConfigControleur implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         try {
+            Platform.runLater(()->{tf_mac.setText(trouverMac());});
             bt_annuler.setOnAction(this::ev_bt_annuler);
             bt_valider.setOnAction(this::ev_bt_valider);
             fichier = new File("./config.bin");
             ObjectInputStream ois = new ObjectInputStream(new FileInputStream(fichier));
             ModeleConfiguration m = (ModeleConfiguration) ois.readObject();
-            tf_mac.setText(trouverMac());
-            tf_latitude.setText(m.getLatitude());
-            tf_longitude.setText(m.getLongitude());
-            tf_serveur.setText(m.getIpServeur());
+            System.out.println(trouverMac());
+            Platform.runLater(()->{ tf_latitude.setText(m.getLatitude());});
+            Platform.runLater(()->{ tf_longitude.setText(m.getLongitude());});
+            Platform.runLater(()->{  tf_serveur.setText(m.getIpServeur());});
+
+
         } catch (IOException | ClassNotFoundException e) {
             System.out.println(e.getMessage());
         }
@@ -48,19 +52,21 @@ public class ConfigControleur implements Initializable {
         this.configStage = configStage;
     }
 
-    public void ev_bt_valider(ActionEvent actionEvent) {
+    public void ev_bt_valider(ActionEvent actionEvent)  {
         if ((tf_latitude.getText().matches(regex)) && (tf_longitude.getText().matches(regex) && (tf_serveur.getText().matches(regexUrl)))) {
-            System.out.println("blblblb");
-           /* modeleConfiguration = new ModeleConfiguration(tf_mac.getText(), tf_latitude.getText(), tf_longitude.getText(), tf_serveur.getText());
+            modeleConfiguration = new ModeleConfiguration(tf_mac.getText(), tf_latitude.getText(), tf_longitude.getText(), tf_serveur.getText());
+
             fichier = new File("./config.bin");
-            ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(fichier));
-            oos.writeObject(modeleConfiguration);
-            oos.close();
-            */
-            modeleConfiguration = new ModeleConfiguration("11:22:33:44:55:66", "0.0", "0.0",tf_serveur.getText());
+            try {
+                ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(fichier));
+                oos.writeObject(modeleConfiguration);
+                System.out.println(modeleConfiguration.getLatitude() + "modele sur le flux");
+                oos.close();
+            } catch (IOException e) {
+                System.out.println(e);
+            }
             this.configStage.close();
         } else {
-            modeleConfiguration = new ModeleConfiguration("11:22:33:44:55:66", "0.0", "0.0",tf_serveur.getText());
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Erreur de saisie");
             if (!(tf_latitude.getText().matches(regex)) || !(tf_longitude.getText().matches(regex))) {
@@ -90,10 +96,13 @@ public class ConfigControleur implements Initializable {
             }
             mac = stringBuilderMac.toString();
             System.out.println("mac= " + mac);
+
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
-        return mac.toLowerCase();
+        //return mac.toLowerCase();
+        System.out.println(mac);
+        return mac;
     }
 
 

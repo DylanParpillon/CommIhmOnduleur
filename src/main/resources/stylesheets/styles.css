@@ -30,7 +30,7 @@ GridPane {
     -fx-content-display: center; /* Centre le texte verticalement */
     -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.5) , 2, 100 , 1 , 1 ); /* Effet d'élévation */
 }
-#labelStatut{
+#labelBox {
     -fx-border-color: rgba(0, 0, 0, 1);
     -fx-border-width: 4px;
     -fx-background-color: rgba(206, 206, 206, 0.7);
