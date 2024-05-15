@@ -139,9 +139,9 @@
                   </LineChart>
                   <HBox prefHeight="100.0" prefWidth="200.0">
                      <children>
-                        <RadioButton mnemonicParsing="false" text="Utilisation  " textFill="WHITE" />
-                        <RadioButton mnemonicParsing="false" text="PanneauSolaire    " textFill="WHITE" />
-                        <RadioButton mnemonicParsing="false" text="Batterie" textFill="WHITE" />
+                        <RadioButton fx:id="buttonUtilisation" mnemonicParsing="false" text="Utilisation  " textFill="WHITE" />
+                        <RadioButton fx:id="buttonPS" mnemonicParsing="false" text="PanneauSolaire    " textFill="WHITE" />
+                        <RadioButton fx:id="buttonBatterie" mnemonicParsing="false" text="Batterie" textFill="WHITE" />
                      </children>
                   </HBox>
                </children>

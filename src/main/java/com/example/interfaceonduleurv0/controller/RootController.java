@@ -17,6 +17,7 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import jssc.SerialPortException;
@@ -40,6 +41,9 @@ public class RootController implements Initializable {
     public CategoryAxis bottomLine;
     public NumberAxis topLine;
     public Label labelEnvoie;
+    public RadioButton buttonUtilisation;
+    public RadioButton buttonPS;
+    public RadioButton buttonBatterie;
     Ihm ihm;
 
     public void setMainApp(Ihm ihm) {
