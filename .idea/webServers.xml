@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="881d91e8-4998-4567-8052-9d7f2b5192ea" name="onduleur">
+        <fileTransfer rootFolder="/home/pi/Desktop" accessType="SFTP" host="10.0.0.179" port="22" sshConfigId="7269238c-595d-4fd0-a1a9-b3343d4dda7b" sshConfig="pi@10.0.0.179:22 password">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" keepAliveTimeout="0" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>
