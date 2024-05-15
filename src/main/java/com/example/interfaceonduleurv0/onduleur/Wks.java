@@ -43,27 +43,27 @@ RootController ctrl ;
         dcp = st_trameBrute.split(" ");
         System.out.println("QPIGS recu");
         System.out.println(st_trameBrute);
-     System.out.println("""
-                %s V = TensionDuReseau 0
-                %s Hz = FrequenceDuReseau 1
-                %s V = TensionDeSortie_AC 2
-                %s Hz = FrequenceDeSortie_AC 3
-                %s VA = PuissanceApparenteDeSortie_AC 4
-                %s W = PuissanceActiveDeSortie_AC 5
-                %s A = CourantEntreePv
-                %s V = TensionBUS 7
-                %s V = TensionBatterie 8
-                %s A = CourantRechargeBatterie 9
-                %s /100 = PourcentageChargeSortie 6
-                %s �C = TemperatureDuRadiateurOnduleur 10
-                %s V = TensionEntreePv 12
-                %s V = TentionBatterie 13
-                %s A = CourantDechargeBatterie 14
-                %s = StatusMateriel1 15 (
-                %s mV = TensionVentilateurs_10mv 16
-                %s = VersionEEPROM 17
-                %s W = PuissanceChargePv 18
-                """.formatted(dcp[0].replace('(', ' '), dcp[1], dcp[2], dcp[3], dcp[4], dcp[5], dcp[6], dcp[7], dcp[8], dcp[9], dcp[10], dcp[11], dcp[12], dcp[13], dcp[14], dcp[15], dcp[16], dcp[17], dcp[18], dcp[19]));
+//     System.out.println("""
+//                %s V = TensionDuReseau 0
+//                %s Hz = FrequenceDuReseau 1
+//                %s V = TensionDeSortie_AC 2
+//                %s Hz = FrequenceDeSortie_AC 3
+//                %s VA = PuissanceApparenteDeSortie_AC 4
+//                %s W = PuissanceActiveDeSortie_AC 5
+//                %s A = CourantEntreePv
+//                %s V = TensionBUS 7
+//                %s V = TensionBatterie 8
+//                %s A = CourantRechargeBatterie 9
+//                %s /100 = PourcentageChargeSortie 6
+//                %s �C = TemperatureDuRadiateurOnduleur 10
+//                %s V = TensionEntreePv 12
+//                %s V = TentionBatterie 13
+//                %s A = CourantDechargeBatterie 14
+//                %s = StatusMateriel1 15 (
+//                %s mV = TensionVentilateurs_10mv 16
+//                %s = VersionEEPROM 17
+//                %s W = PuissanceChargePv 18
+//                """.formatted(dcp[0].replace('(', ' '), dcp[1], dcp[2], dcp[3], dcp[4], dcp[5], dcp[6], dcp[7], dcp[8], dcp[9], dcp[10], dcp[11], dcp[12], dcp[13], dcp[14], dcp[15], dcp[16], dcp[17], dcp[18], dcp[19]));
         qpigs.setTensionDuReseau(dcp[3]);
         qpigs.setFrequenceDuReseau(dcp[1]);
         qpigs.setTensionDeSortie_AC(dcp[2]);
@@ -106,26 +106,26 @@ RootController ctrl ;
 
             System.out.println("Methode QPIRI");
             System.out.println(st_trameBrute);
-            System.out.println("""
-                            %s V = tension nominale du r�sleau
-                            %s A = courant nominale du r�seau
-                            %s V = TensionNominaleDeSortie_AC
-                            %s Hz = FrequenceNominaleDeSortie_AC
-                            %s A = CourantNominalDeSortie_AC
-                            %s VA = PuissanceApparenteDeSortie_AC
-                            %s W = PuissanceActiveDeSortie_AC
-                            %s V =TensionNominaleBatterie
-                            %s V = TensionRechargeBatterie
-                            %s V = TensionBasseBatterie
-                            %s V = TensionMasseBatterie
-                            %s V = TensionEntretienBatterie
-                            %s = TypeBatterie
-                            %s A = CourantDeCharge_AC_max
-                            %s A = CourantDeCharge_max
-                            %s = PlageDeTensionEntree
-                            %s = PrioriteSourceDeSortie
-                            %S = PrioriteSourceDuChargeur
-                            """.formatted(dcp[0].replace('(', ' '), dcp[1], dcp[2], dcp[3], dcp[4], dcp[5], dcp[6], dcp[7], dcp[8], dcp[9], dcp[10], dcp[11], dcp[12], dcp[13], dcp[14], dcp[15], dcp[16], dcp[17]));
+//            System.out.println("""
+//                            %s V = tension nominale du r�sleau
+//                            %s A = courant nominale du r�seau
+//                            %s V = TensionNominaleDeSortie_AC
+//                            %s Hz = FrequenceNominaleDeSortie_AC
+//                            %s A = CourantNominalDeSortie_AC
+//                            %s VA = PuissanceApparenteDeSortie_AC
+//                            %s W = PuissanceActiveDeSortie_AC
+//                            %s V =TensionNominaleBatterie
+//                            %s V = TensionRechargeBatterie
+//                            %s V = TensionBasseBatterie
+//                            %s V = TensionMasseBatterie
+//                            %s V = TensionEntretienBatterie
+//                            %s = TypeBatterie
+//                            %s A = CourantDeCharge_AC_max
+//                            %s A = CourantDeCharge_max
+//                            %s = PlageDeTensionEntree
+//                            %s = PrioriteSourceDeSortie
+//                            %S = PrioriteSourceDuChargeur
+//                            """.formatted(dcp[0].replace('(', ' '), dcp[1], dcp[2], dcp[3], dcp[4], dcp[5], dcp[6], dcp[7], dcp[8], dcp[9], dcp[10], dcp[11], dcp[12], dcp[13], dcp[14], dcp[15], dcp[16], dcp[17]));
 
             qpiri.setTensionNominaleDuReseau(dcp[0]);
             qpiri.setCourantNominalDuReseau(dcp[1]);
@@ -156,52 +156,52 @@ RootController ctrl ;
             st_trameBrute = new String(trameBrute, StandardCharsets.US_ASCII);
             dcp = st_trameBrute.split(" ");
             System.out.println("QPIWS recu");
-            System.out.println("""
-                            %s = Reserved
-                            %s = Default onduleur
-                            %s = Bus termin�
-                            %s = Bus Under
-                            %s = EchecProgressifBus
-                            %s = �chec de ligne
-                            %s = OPVShort
-                            %s = TensionOnduleurTropFaible
-                            %s = TensionOnduleurTropElevee
-                            %s = Surchauffe
-                            %s = VentilateurVerrouille
-                            %s = TensionBatterieElevee
-                            %s = AlarmeBatterieFaible
-                            %s = Reserve_Surcharge
-                            %s = BatterieArret
-                            %s = ReserveDeclassementBatterie
-                            %s = Surcharge
-                            %s = DefautEeprom
-                            %s = SurintensiteOnduleur
-                            %s = OnduleurSoftFail
-                            %s = EchecAuto_test
-                            %s = TensionContinueOPsur
-                            %s = BatOpen
-                            %s = DefaillanceCapteurCourant
-                            %s = Batteriecourte
-                            %s = LimitePuissance
-                            %s = TensionElevee1
-                            %s = DefautSurchargeMPPT1
-                            %s = AvertissementSurchargeMPPT1
-                            %s = BatterieTropFaiblePourEtreChargee1
-                            %s = TensionPVelevee2
-                            %s = DefautSurchargeMPPT2
-                            %s = AvertissementSurchargeMPPT2
-                            %s = BatterieTropFaiblePourCharger2
-                            %s = TensionPVelevee3
-                            %s = DefautSurchargeMPPT3
-                            %s = AvertissementSurchargeMPPT3
-                            %s = BatterieTropFaiblePourEtreChargee3
-                            """.formatted(dcp[0].toCharArray()[0], dcp[0].toCharArray()[1], dcp[0].toCharArray()[2], dcp[0].toCharArray()[3], dcp[0].toCharArray()[4],
-                    dcp[0].toCharArray()[5], dcp[0].toCharArray()[6], dcp[0].toCharArray()[7], dcp[0].toCharArray()[8], dcp[0].toCharArray()[9], dcp[0].toCharArray()[10],
-                    dcp[0].toCharArray()[11], dcp[0].toCharArray()[12], dcp[0].toCharArray()[13], dcp[0].toCharArray()[14], dcp[0].toCharArray()[15], dcp[0].toCharArray()[16],
-                    dcp[0].toCharArray()[17], dcp[0].toCharArray()[18], dcp[0].toCharArray()[19], dcp[0].toCharArray()[20], dcp[0].toCharArray()[21], dcp[0].toCharArray()[22],
-                    dcp[0].toCharArray()[23], dcp[0].toCharArray()[24], dcp[0].toCharArray()[25], dcp[0].toCharArray()[26], dcp[0].toCharArray()[27], dcp[0].toCharArray()[28],
-                    dcp[0].toCharArray()[29], dcp[0].toCharArray()[30], dcp[0].toCharArray()[31], dcp[0].toCharArray()[32], dcp[0].toCharArray()[33], dcp[0].toCharArray()[34],
-                    dcp[0].toCharArray()[35], dcp[0].toCharArray()[36], dcp[0].toCharArray()[37]));
+//            System.out.println("""
+//                            %s = Reserved
+//                            %s = Default onduleur
+//                            %s = Bus termin�
+//                            %s = Bus Under
+//                            %s = EchecProgressifBus
+//                            %s = �chec de ligne
+//                            %s = OPVShort
+//                            %s = TensionOnduleurTropFaible
+//                            %s = TensionOnduleurTropElevee
+//                            %s = Surchauffe
+//                            %s = VentilateurVerrouille
+//                            %s = TensionBatterieElevee
+//                            %s = AlarmeBatterieFaible
+//                            %s = Reserve_Surcharge
+//                            %s = BatterieArret
+//                            %s = ReserveDeclassementBatterie
+//                            %s = Surcharge
+//                            %s = DefautEeprom
+//                            %s = SurintensiteOnduleur
+//                            %s = OnduleurSoftFail
+//                            %s = EchecAuto_test
+//                            %s = TensionContinueOPsur
+//                            %s = BatOpen
+//                            %s = DefaillanceCapteurCourant
+//                            %s = Batteriecourte
+//                            %s = LimitePuissance
+//                            %s = TensionElevee1
+//                            %s = DefautSurchargeMPPT1
+//                            %s = AvertissementSurchargeMPPT1
+//                            %s = BatterieTropFaiblePourEtreChargee1
+//                            %s = TensionPVelevee2
+//                            %s = DefautSurchargeMPPT2
+//                            %s = AvertissementSurchargeMPPT2
+//                            %s = BatterieTropFaiblePourCharger2
+//                            %s = TensionPVelevee3
+//                            %s = DefautSurchargeMPPT3
+//                            %s = AvertissementSurchargeMPPT3
+//                            %s = BatterieTropFaiblePourEtreChargee3
+//                            """.formatted(dcp[0].toCharArray()[0], dcp[0].toCharArray()[1], dcp[0].toCharArray()[2], dcp[0].toCharArray()[3], dcp[0].toCharArray()[4],
+//                    dcp[0].toCharArray()[5], dcp[0].toCharArray()[6], dcp[0].toCharArray()[7], dcp[0].toCharArray()[8], dcp[0].toCharArray()[9], dcp[0].toCharArray()[10],
+//                    dcp[0].toCharArray()[11], dcp[0].toCharArray()[12], dcp[0].toCharArray()[13], dcp[0].toCharArray()[14], dcp[0].toCharArray()[15], dcp[0].toCharArray()[16],
+//                    dcp[0].toCharArray()[17], dcp[0].toCharArray()[18], dcp[0].toCharArray()[19], dcp[0].toCharArray()[20], dcp[0].toCharArray()[21], dcp[0].toCharArray()[22],
+//                    dcp[0].toCharArray()[23], dcp[0].toCharArray()[24], dcp[0].toCharArray()[25], dcp[0].toCharArray()[26], dcp[0].toCharArray()[27], dcp[0].toCharArray()[28],
+//                    dcp[0].toCharArray()[29], dcp[0].toCharArray()[30], dcp[0].toCharArray()[31], dcp[0].toCharArray()[32], dcp[0].toCharArray()[33], dcp[0].toCharArray()[34],
+//                    dcp[0].toCharArray()[35], dcp[0].toCharArray()[36], dcp[0].toCharArray()[37]));
             qpiws.setReserved(String.valueOf(dcp[0].toCharArray()[0]));
             qpiws.setDefaillanceOnduleur(String.valueOf(dcp[0].toCharArray()[1]));
             qpiws.setBusOver(String.valueOf(dcp[0].toCharArray()[2]));
@@ -280,6 +280,7 @@ RootController ctrl ;
         for (byte b : ArrayUtils.add(ArrayUtils.addAll(POP, crc), CR)) {
             sb.append(String.format("%02X ", b));
         }
+        System.out.println("------QPIRI  DONE------");
         super.ecrire(ArrayUtils.add(ArrayUtils.addAll(POP, crc), CR));
 
 
@@ -294,20 +295,19 @@ RootController ctrl ;
         for (byte b : ArrayUtils.add(ArrayUtils.addAll(QPIGS, crc), CR)) {
             sb.append(String.format("%02X ", b));
         }
-        System.out.println("demande done");
         super.ecrire(ArrayUtils.add(ArrayUtils.addAll(QPIGS, crc), CR));
     }
 
-    public void demandeQPIRI() {
+    public void demandeQPIRI(String values) {
 
-        setting("01");
+        setting(values);
         System.out.println("demandeQPIRI");
         StringBuilder sb = new StringBuilder();
         byte[] crc = intToByteArray(crc16CcittXmodel(QPIRI));
         for (byte b : ArrayUtils.add(ArrayUtils.addAll(QPIRI, crc), CR)) {
             sb.append(String.format("%02X ", b));
         }
-        System.out.println("demande done");
+        System.out.println("------QPIRI  DONE------");
         super.ecrire(ArrayUtils.add(ArrayUtils.addAll(QPIRI, crc), CR));
     }
 
@@ -319,7 +319,7 @@ RootController ctrl ;
         for (byte b : ArrayUtils.add(ArrayUtils.addAll(QPIWS, crc), CR)) {
             sb.append(String.format("%02X ", b));
         }
-        System.out.println("demande done");
+        System.out.println("---------QPIWS done--------");
         super.ecrire(ArrayUtils.add(ArrayUtils.addAll(QPIWS, crc), CR));
     }
 

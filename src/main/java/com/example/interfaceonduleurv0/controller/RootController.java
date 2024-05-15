@@ -130,6 +130,7 @@ public class RootController implements Initializable {
      * Instance de la classe Wks pour la communication avec le matériel.
      */
     Wks wks = new Wks(this);
+    String values = "02";
 
     /**
      * Modèle pour les données QPIGS.
@@ -144,6 +145,7 @@ public class RootController implements Initializable {
     public RootController() throws SQLException {
     }
     ModeleConfiguration m;
+    String com ;
 
     /**
      * Méthode d'initialisation de la classe RootController.
@@ -153,8 +155,23 @@ public class RootController implements Initializable {
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        texteInfo.append(new LiaisonSerie().listerLesPorts().toString());
-
+       com = new LiaisonSerie().listerLesPorts().toString();
+        buttonBatterie.setSelected(true);
+            buttonBatterie.setOnAction((e)->{
+                values = "02";
+                buttonPS.setSelected(false);
+                buttonUtilisation.setSelected(false);
+            });
+           buttonPS.setOnAction((e)->{
+               values ="01" ;
+               buttonBatterie.setSelected(false);
+               buttonUtilisation.setSelected(false);
+           });
+           buttonUtilisation.setOnAction((e)->{
+               values ="00";
+             buttonPS.setSelected(false);
+               buttonBatterie.setSelected(false);
+           });
         ButtonSetting.setOnAction(e -> {
             ihm.configView();
             try {
@@ -191,7 +208,7 @@ public class RootController implements Initializable {
                     throw new RuntimeException(e);
                 }
             });
-            wks.initCom("COM7");
+            wks.initCom(new LiaisonSerie().listerLesPorts().get(0).toString());
             wks.configurerParametres(2400, 8, 0, 1);
             recupMesureOnduleur();
         } catch (SerialPortException e) {
@@ -263,17 +280,17 @@ public class RootController implements Initializable {
             @Override
             public void run() {
                 try {
-                    wks.demandeQPIRI();
-                    Thread.sleep(3000);
+                    wks.demandeQPIRI(values);
+                    Thread.sleep(6000);
                     wks.demandeQPIWS();
-                    Thread.sleep(3000);
+                    Thread.sleep(6000);
                     wks.demandeQPIGS();
-                    Thread.sleep(3000);
+                    Thread.sleep(6000);
                 } catch (InterruptedException ignored) {
                 }
             }
         };
-        bdt.scheduleAtFixedRate(ordreDemandeOnduleur, 2000, 1000);
+        bdt.scheduleAtFixedRate(ordreDemandeOnduleur, 2000, 2000);
     }
 
     public void updateGainGraph() throws SQLException {
@@ -303,6 +320,9 @@ public class RootController implements Initializable {
         });
         Platform.runLater(() -> {
             labelStatut.setText(String.valueOf(texteInfo));
+        });
+        Platform.runLater(() -> {
+            labelStatut.setText(com);
         });
         System.out.println("partie graphique a jour");
     }
@@ -341,40 +361,43 @@ public class RootController implements Initializable {
         ModeleQPIGS lastQ = new ModeleQPIGS();
         for (ModeleQPIGS m : dataQPIGS) lastQ = m;
         ModeleInsert start = new ModeleInsert();
-        start.setName(generateRandomString(5));
-        start.setMacAddress(m.getMac());
-        start.setPosition(m.getLatitude(), m.getLongitude());
-        start.setIsOnline(true);
-        if(lastQ != null) start.setBatteryPercentage(Integer.parseInt(lastQ.getPourcentageCapaciteBatterie()));
-        start.setOutputActivePower(0);
-        start.setOutputVoltage(12);
-        start.setInverterFault(true);
-        start.setLineFail(true);
-        start.setVoltageTooLow(true);
-        start.setVoltageTooHigh(true);
-        start.setOverTemperature(true);
-        start.setFanLocked(true);
-        start.setBatteryLowAlarm(true);
-        start.setBatteryTooLowToCharge(true);
-        start.setSoftFail(true);
+
+            start.setName(generateRandomString(5));
+            start.setMacAddress(m.getMac());
+            start.setPosition(m.getLatitude(), m.getLongitude());
+            start.setIsOnline(true);
+        if(lastQ != null )  start.setBatteryPercentage(Integer.parseInt(lastQ.getPourcentageCapaciteBatterie()));
+            start.setOutputActivePower(0);
+            start.setOutputVoltage(12);
+            start.setInverterFault(false);
+            start.setLineFail(false);
+            start.setVoltageTooLow(false);
+            start.setVoltageTooHigh(false);
+            start.setOverTemperature(false);
+            start.setFanLocked(false);
+            start.setBatteryLowAlarm(false);
+            start.setBatteryTooLowToCharge(false);
+            start.setSoftFail(false);
         return start;
     }
 
     public void modifWarning(){
-        ModeleWarning modeleWarning = new ModeleWarning();;
+
         TimerTask updateWarning = new TimerTask() {
             @Override
             public void run() {
+                ModeleWarning modeleWarning = new ModeleWarning(); ModeleQPIWS lastW = new ModeleQPIWS();
+                for (ModeleQPIWS w : dataQPIWS) lastW = w;
                 modeleWarning.setMacAddress(m.getMac());
-                modeleWarning.setInverterFault(true);
-                modeleWarning.setLineFail(false);
-                modeleWarning.setVoltageTooLow(true);
-                modeleWarning.setVoltageTooHigh(false);
-                modeleWarning.setOverTemperature(true);
-                modeleWarning.setFanLocked(false);
-                modeleWarning.setBatteryLowAlarm(true);
-                modeleWarning.setSoftFail(false);
-                modeleWarning.setBatteryTooLowToCharge(true);
+                modeleWarning.setInverterFault(lastW.getDefaillanceOnduleur().equals("true"));
+                modeleWarning.setLineFail(lastW.getLineFail().equals("true"));
+                modeleWarning.setVoltageTooLow(lastW.getTensionOnduleurTropFaible().equals("true"));
+                modeleWarning.setVoltageTooHigh(lastW.getTensionOnduleurTropElevee().equals("true"));
+                modeleWarning.setOverTemperature(lastW.getSurchauffe().equals("true"));
+                modeleWarning.setFanLocked(lastW.getVentilateurVerrouille().equals("true"));
+                modeleWarning.setBatteryLowAlarm(lastW.getAlarmeBatterieFaible().equals("true"));
+                modeleWarning.setSoftFail(lastW.getBatterieTropFaiblePourCharger2().equals("true")||lastW.getBatterieTropFaiblePourEtreChargee1().equals("true")||lastW.getBatterieTropFaiblePourEtreChargee3().equals("true"));
+                modeleWarning.setBatteryTooLowToCharge(lastW.getOnduleurSoftFail().equals("true"));
                 bddDistante.modifWarning(modeleWarning,m.getIpServeur());
             }
         };
