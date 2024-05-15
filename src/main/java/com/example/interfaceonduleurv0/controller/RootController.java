@@ -114,7 +114,7 @@ public class RootController implements Initializable {
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        labelStatut.setText(new LiaisonSerie().listerLesPorts().toString());
+//        labelStatut.setText(new LiaisonSerie().listerLesPorts().toString());
         ButtonSetting.setOnAction(e -> {ihm.configView();});
         buttonServer.setOnAction((e) -> {ihm.wifiView();});
         new Thread(()->{
@@ -129,7 +129,8 @@ public class RootController implements Initializable {
         try {
             ObservableList<String> ObList = FXCollections.observableList(sqlGestion.getAllDate());
             choiceBoxDate.setItems(ObList);
-            wks.initCom("COM7");
+            //wks.initCom("/dev/ttyUSB0");
+            wks.initCom("COM3");
             choiceBoxDate.setOnAction(event ->{
                 System.out.println(choiceBoxDate.getValue());
                 try {
