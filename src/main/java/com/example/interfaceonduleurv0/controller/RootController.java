@@ -361,7 +361,6 @@ public class RootController implements Initializable {
         ModeleQPIGS lastQ = new ModeleQPIGS();
         for (ModeleQPIGS m : dataQPIGS) lastQ = m;
         ModeleInsert start = new ModeleInsert();
-
             start.setName(generateRandomString(5));
             start.setMacAddress(m.getMac());
             start.setPosition(m.getLatitude(), m.getLongitude());
