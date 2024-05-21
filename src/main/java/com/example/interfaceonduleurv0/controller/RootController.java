@@ -208,7 +208,7 @@ public class RootController implements Initializable {
                     throw new RuntimeException(e);
                 }
             });
-            wks.initCom(new LiaisonSerie().listerLesPorts().get(0).toString());
+            wks.initCom("/dev/tty/USB0");
             wks.configurerParametres(2400, 8, 0, 1);
             recupMesureOnduleur();
         } catch (SerialPortException e) {
