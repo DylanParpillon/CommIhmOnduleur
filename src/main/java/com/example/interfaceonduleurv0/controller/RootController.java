@@ -303,7 +303,7 @@ public class RootController implements Initializable {
     }
 
     public void updateGainGraph() throws SQLException {
-        DecimalFormat dcF = new DecimalFormat("0.000 e");
+        DecimalFormat dcF = new DecimalFormat("#,00 e");
         Platform.runLater(() -> {
             try {
                 labelGainM.setText(dcF.format(sqlGestion.getlastMonth()));

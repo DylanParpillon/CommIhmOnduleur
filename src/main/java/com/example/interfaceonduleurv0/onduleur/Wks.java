@@ -86,7 +86,7 @@ RootController ctrl ;
         qpigs.setVersionEEPROM(dcp[19]);
         qpigs.setPuissanceChargePv(dcp[19]);
         ctrl.dataQPIGS.add(qpigs);
-        DecimalFormat dfBatterie = new DecimalFormat("# %");
+        DecimalFormat dfBatterie = new DecimalFormat("#");
         DecimalFormat dfT = new DecimalFormat("# V");
         DecimalFormat dfBP = new DecimalFormat("# W");
         Platform.runLater(()->{
