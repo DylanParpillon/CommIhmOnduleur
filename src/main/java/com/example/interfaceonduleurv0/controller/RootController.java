@@ -28,6 +28,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.URL;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
 import java.util.*;
 
 /**
@@ -144,8 +145,9 @@ public class RootController implements Initializable {
      */
     public RootController() throws SQLException {
     }
+
     ModeleConfiguration m;
-    String com ;
+    String com;
 
     /**
      * Méthode d'initialisation de la classe RootController.
@@ -155,23 +157,23 @@ public class RootController implements Initializable {
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-       com = new LiaisonSerie().listerLesPorts().toString();
+        com = new LiaisonSerie().listerLesPorts().toString();
         buttonBatterie.setSelected(true);
-            buttonBatterie.setOnAction((e)->{
-                values = "02";
-                buttonPS.setSelected(false);
-                buttonUtilisation.setSelected(false);
-            });
-           buttonPS.setOnAction((e)->{
-               values ="01" ;
-               buttonBatterie.setSelected(false);
-               buttonUtilisation.setSelected(false);
-           });
-           buttonUtilisation.setOnAction((e)->{
-               values ="00";
-             buttonPS.setSelected(false);
-               buttonBatterie.setSelected(false);
-           });
+        buttonBatterie.setOnAction((e) -> {
+            values = "02";
+            buttonPS.setSelected(false);
+            buttonUtilisation.setSelected(false);
+        });
+        buttonPS.setOnAction((e) -> {
+            values = "01";
+            buttonBatterie.setSelected(false);
+            buttonUtilisation.setSelected(false);
+        });
+        buttonUtilisation.setOnAction((e) -> {
+            values = "00";
+            buttonPS.setSelected(false);
+            buttonBatterie.setSelected(false);
+        });
         ButtonSetting.setOnAction(e -> {
             ihm.configView();
             try {
@@ -184,9 +186,12 @@ public class RootController implements Initializable {
                     System.out.println(m.getLatitude());
                     if (m != null) {
                         flag = false;
-                        texteInfo.append("-MacAdresse : "+ m.getMac());
+                        texteInfo.append("-MacAdresse : " + m.getMac());
                         bddDistante.insertInverter(initialisation(), m.getIpServeur());
-                        Platform.runLater(()->{labelEnvoie.setTextFill(Color.GREEN);labelEnvoie.setText("ATTENTION APPAREIL CONFIGURER");});
+                        Platform.runLater(() -> {
+                            labelEnvoie.setTextFill(Color.GREEN);
+                            labelEnvoie.setText("ATTENTION APPAREIL CONFIGURER");
+                        });
                         modifWarning();
                     }
                 }
@@ -233,17 +238,21 @@ public class RootController implements Initializable {
                         boolean dataStatue = bddDistante.post(stockValeurEnvoie, m.getIpServeur());
                         if (dataStatue) {
                             System.out.println("envoyer");
-                            Platform.runLater(()->{labelEnvoie.setTextFill(Color.GREEN);
-                            labelEnvoie.setText("Données envoyer à distance");});
+                            Platform.runLater(() -> {
+                                labelEnvoie.setTextFill(Color.GREEN);
+                                labelEnvoie.setText("Données envoyer à distance");
+                            });
                             saveOffline.clear();
                             //mettre l'icone connexion
                         } else {
                             System.out.println("pas envoyer");
-                            Platform.runLater(()->{labelEnvoie.setText("Données non envoyer");  });
+                            Platform.runLater(() -> {
+                                labelEnvoie.setText("Données non envoyer");
+                            });
                             saveOffline.add(stockValeurEnvoie);
                         }
-                    }else {
-                        Platform.runLater(()->{
+                    } else {
+                        Platform.runLater(() -> {
                             labelEnvoie.setTextFill(Color.RED);
                             labelEnvoie.setText("ATTENTION APPAREIL NON CONFIGURER");
                         });
@@ -294,32 +303,30 @@ public class RootController implements Initializable {
     }
 
     public void updateGainGraph() throws SQLException {
+        DecimalFormat dcF = new DecimalFormat("0.000 e");
         Platform.runLater(() -> {
             try {
-                labelGainM.setText(sqlGestion.getlastMonth());
+                labelGainM.setText(dcF.format(sqlGestion.getlastMonth()));
             } catch (SQLException ignored) {
             }
         });
         Platform.runLater(() -> {
             try {
-                labelGainJ.setText(sqlGestion.getlastDay());
+                labelGainJ.setText(dcF.format(sqlGestion.getlastDay()));
             } catch (SQLException ignored) {
             }
         });
         Platform.runLater(() -> {
             try {
-                labelGainH.setText(sqlGestion.getlastHours());
+                labelGainH.setText(dcF.format(sqlGestion.getlastHours()));
             } catch (SQLException ignored) {
             }
         });
         Platform.runLater(() -> {
             try {
-                labelGainI.setText(String.valueOf(sqlGestion.getLastValue().getEuro()));
+                labelGainI.setText(dcF.format(String.valueOf(sqlGestion.getLastValue().getEuro())));
             } catch (SQLException ignored) {
             }
-        });
-        Platform.runLater(() -> {
-            labelStatut.setText(String.valueOf(texteInfo));
         });
         Platform.runLater(() -> {
             labelStatut.setText(com);
@@ -361,31 +368,32 @@ public class RootController implements Initializable {
         ModeleQPIGS lastQ = new ModeleQPIGS();
         for (ModeleQPIGS m : dataQPIGS) lastQ = m;
         ModeleInsert start = new ModeleInsert();
-            start.setName(generateRandomString(5));
-            start.setMacAddress(m.getMac());
-            start.setPosition(m.getLatitude(), m.getLongitude());
-            start.setIsOnline(true);
-        if(lastQ != null )  start.setBatteryPercentage(Integer.parseInt(lastQ.getPourcentageCapaciteBatterie()));
-            start.setOutputActivePower(0);
-            start.setOutputVoltage(12);
-            start.setInverterFault(false);
-            start.setLineFail(false);
-            start.setVoltageTooLow(false);
-            start.setVoltageTooHigh(false);
-            start.setOverTemperature(false);
-            start.setFanLocked(false);
-            start.setBatteryLowAlarm(false);
-            start.setBatteryTooLowToCharge(false);
-            start.setSoftFail(false);
+        start.setName(generateRandomString(5));
+        start.setMacAddress(m.getMac());
+        start.setPosition(m.getLatitude(), m.getLongitude());
+        start.setIsOnline(true);
+        if (lastQ != null) start.setBatteryPercentage(Integer.parseInt(lastQ.getPourcentageCapaciteBatterie()));
+        start.setOutputActivePower(0);
+        start.setOutputVoltage(12);
+        start.setInverterFault(false);
+        start.setLineFail(false);
+        start.setVoltageTooLow(false);
+        start.setVoltageTooHigh(false);
+        start.setOverTemperature(false);
+        start.setFanLocked(false);
+        start.setBatteryLowAlarm(false);
+        start.setBatteryTooLowToCharge(false);
+        start.setSoftFail(false);
         return start;
     }
 
-    public void modifWarning(){
+    public void modifWarning() {
 
         TimerTask updateWarning = new TimerTask() {
             @Override
             public void run() {
-                ModeleWarning modeleWarning = new ModeleWarning(); ModeleQPIWS lastW = new ModeleQPIWS();
+                ModeleWarning modeleWarning = new ModeleWarning();
+                ModeleQPIWS lastW = new ModeleQPIWS();
                 for (ModeleQPIWS w : dataQPIWS) lastW = w;
                 modeleWarning.setMacAddress(m.getMac());
                 modeleWarning.setInverterFault(lastW.getDefaillanceOnduleur().equals("true"));
@@ -395,12 +403,12 @@ public class RootController implements Initializable {
                 modeleWarning.setOverTemperature(lastW.getSurchauffe().equals("true"));
                 modeleWarning.setFanLocked(lastW.getVentilateurVerrouille().equals("true"));
                 modeleWarning.setBatteryLowAlarm(lastW.getAlarmeBatterieFaible().equals("true"));
-                modeleWarning.setSoftFail(lastW.getBatterieTropFaiblePourCharger2().equals("true")||lastW.getBatterieTropFaiblePourEtreChargee1().equals("true")||lastW.getBatterieTropFaiblePourEtreChargee3().equals("true"));
+                modeleWarning.setSoftFail(lastW.getBatterieTropFaiblePourCharger2().equals("true") || lastW.getBatterieTropFaiblePourEtreChargee1().equals("true") || lastW.getBatterieTropFaiblePourEtreChargee3().equals("true"));
                 modeleWarning.setBatteryTooLowToCharge(lastW.getOnduleurSoftFail().equals("true"));
-                bddDistante.modifWarning(modeleWarning,m.getIpServeur());
+                bddDistante.modifWarning(modeleWarning, m.getIpServeur());
             }
         };
-        bdt4.scheduleAtFixedRate(updateWarning,0,60000);
+        bdt4.scheduleAtFixedRate(updateWarning, 0, 60000);
     }
 
     public static String generateRandomString(int length) {

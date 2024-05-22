@@ -11,6 +11,7 @@ import org.apache.commons.lang3.ArrayUtils;
 
 import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
 
 
 public class Wks extends LiaisonSerie {
@@ -85,14 +86,17 @@ RootController ctrl ;
         qpigs.setVersionEEPROM(dcp[19]);
         qpigs.setPuissanceChargePv(dcp[19]);
         ctrl.dataQPIGS.add(qpigs);
+        DecimalFormat dfBatterie = new DecimalFormat("# %");
+        DecimalFormat dfT = new DecimalFormat("# V");
+        DecimalFormat dfBP = new DecimalFormat("# W");
         Platform.runLater(()->{
-            ctrl.labelBatterie.setText(qpigs.getPourcentageCapaciteBatterie());
+            ctrl.labelBatterie.setText(dfBatterie.format(qpigs.getPourcentageCapaciteBatterie()));
         });
         Platform.runLater(()->{
-            ctrl.labelTensionSortie.setText(qpigs.getTensionDeSortie_AC());
+            ctrl.labelTensionSortie.setText(dfT.format( qpigs.getTensionDeSortie_AC() ));
         });
         Platform.runLater(()->{
-            ctrl.labelPSortie.setText(qpigs.getPuissanceActiveDeSortie_AC());
+            ctrl.labelPSortie.setText(dfBP.format( qpigs.getPuissanceActiveDeSortie_AC() ));
         });
         return qpigs;
     }
