@@ -13,7 +13,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 import java.io.IOException;
-
+//.javafx.isEmbedded=true -Dcom.sun.javafx.virtualKeyboard=javafx
 public class Ihm extends Application {
     private Stage primaryStage;
 
