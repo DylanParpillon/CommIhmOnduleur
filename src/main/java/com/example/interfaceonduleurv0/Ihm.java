@@ -22,7 +22,7 @@ public class Ihm extends Application {
         this.primaryStage = primaryStage;
         this.primaryStage.setTitle("Info Systéme Onduleur");
         this.primaryStage.setResizable(true);
-        this.primaryStage.setIconified(false);
+        this.primaryStage.setIconified(true);
         this.primaryStage.initStyle(StageStyle.UNDECORATED); //pour rpi full screen
         this.primaryStage.setFullScreen(true);
         this.primaryStage.setFullScreenExitHint(""); // disable fullscreen toggle hint
