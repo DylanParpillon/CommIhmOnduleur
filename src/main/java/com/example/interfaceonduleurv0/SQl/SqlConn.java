@@ -29,8 +29,8 @@ public class SqlConn {
             Class.forName("org.sqlite.JDBC");
 
             // Établissement de la connexion à la base de données
-           conn = DriverManager.getConnection("jdbc:sqlite:/home/pi/onduleur.db");
-            //  conn = DriverManager.getConnection("jdbc:sqlite:C:/Users/didou/Documents/GitHub/CommIhmOnduleur/src/onduleur.db");
+           //conn = DriverManager.getConnection("jdbc:sqlite:/home/pi/onduleur.db");
+             conn = DriverManager.getConnection("jdbc:sqlite:C:/Users/didou/Documents/GitHub/CommIhmOnduleur/src/onduleur.db");
 
             System.out.println("Connexion à la base de données établie avec succès.");
         } catch (SQLException | ClassNotFoundException e) {

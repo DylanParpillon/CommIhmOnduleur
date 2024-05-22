@@ -14,9 +14,10 @@ import javafx.stage.StageStyle;
 
 import java.io.IOException;
 //.javafx.isEmbedded=true -Dcom.sun.javafx.virtualKeyboard=javafx
+
+
 public class Ihm extends Application {
     private Stage primaryStage;
-
     @Override
     public void start(Stage primaryStage) throws IOException {
         this.primaryStage = primaryStage;
@@ -24,7 +25,6 @@ public class Ihm extends Application {
         this.primaryStage.setResizable(true);
         this.primaryStage.setIconified(true);
         this.primaryStage.initStyle(StageStyle.UNDECORATED); //pour rpi full screen
-        this.primaryStage.setFullScreen(true);
         this.primaryStage.setFullScreenExitHint(""); // disable fullscreen toggle hint
         this.primaryStage.setFullScreenExitKeyCombination(KeyCombination.NO_MATCH); // prevent ESC toggling fullscreen
         rootView();
